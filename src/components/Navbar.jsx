@@ -31,19 +31,28 @@ export default function Navbar() {
             </div>
             {/* HIDDEN NAV */}
             <div className=" hidden sm:flex sm:space-x-5  ">
-                <span className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ">
+                <span
+                    onClick={() => navigate('/')}
+                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] "
+                >
                     <a href="#cuahang">Cửa hàng</a>
                 </span>
-                <span className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]">
+                <span
+                    onClick={() => navigate('/')}
+                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
+                >
                     <a href="#gioithieu">Giới thiệu</a>
                 </span>
                 <span
                     onClick={() => navigate('/question')}
                     className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
                 >
-                    Hỏi đáp
+                    <a href="#hoidap">Hỏi đáp</a>
                 </span>
-                <span className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]">
+                <span
+                    // onClick={() => navigate('/')}
+                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
+                >
                     <a href="#lienhe">Liên hệ</a>
                 </span>
             </div>
