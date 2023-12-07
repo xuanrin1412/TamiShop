@@ -3,7 +3,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import Avatar from '@mui/material/Avatar'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export default function Navbar() {
     const navigate = useNavigate()
@@ -50,10 +50,10 @@ export default function Navbar() {
                     <a href="#hoidap">Hỏi đáp</a>
                 </span>
                 <span
-                    // onClick={() => navigate('/')}
+                    onClick={() => navigate('/contact')}
                     className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
                 >
-                    <a href="#lienhe">Liên hệ</a>
+                    Liên hệ
                 </span>
             </div>
             {/* FULL RIGHT */}

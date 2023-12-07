@@ -2,8 +2,8 @@ import React from 'react'
 import Navbar from '../components/Navbar'
 import ProductMain from '../components/ProductMain'
 import Intro from '../components/Intro'
-import Contact from '../components/Contact'
 import Copyright from '../components/Copyright'
+import Footer from '../components/Footer'
 
 export default function Home() {
     return (
@@ -11,7 +11,7 @@ export default function Home() {
             <Navbar />
             <ProductMain />
             <Intro />
-            <Contact />
+            <Footer />
             <Copyright />
         </div>
     )

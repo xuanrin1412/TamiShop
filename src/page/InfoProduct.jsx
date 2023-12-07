@@ -1,9 +1,9 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
-import Contact from '../components/Contact'
 import Copyright from '../components/Copyright'
 import { ArrowLeftOutlined, ArrowRight, Favorite } from '@mui/icons-material'
 import ToggleInfoDes from '../components/ToggleInfoDes'
+import Footer from '../components/Footer'
 
 export default function InfoProduct() {
     return (
@@ -122,7 +122,7 @@ export default function InfoProduct() {
                     </div>
                 </div>
             </div>
-            <Contact />
+            <Footer />
             <Copyright />
         </div>
     )

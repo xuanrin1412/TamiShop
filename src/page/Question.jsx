@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar'
-import Contact from '../components/Contact'
 import Copyright from '../components/Copyright'
 import ToggleQuestion from '../components/ToggleQuestion'
 import { Search } from '@mui/icons-material'
+import Footer from '../components/Footer'
 
 export default function Question() {
     const [openTL, setOpenTL] = useState(true)
@@ -39,7 +39,7 @@ export default function Question() {
     return (
         <div>
             <Navbar />
-            <div id="#hoidap" className="scroll-smooth mt-[104px]">
+            <div id="#hoidap" className="scroll-smooth mt-[104px] p-8 sm:p-0">
                 <div className="max-w-3xl mx-auto py-20 ">
                     <div className=" text-left text-4xl font-bold">Hỏi đáp</div>
                     <div className="relative flex p-2 my-8">
@@ -188,7 +188,7 @@ export default function Question() {
                     </div>
                 </div>
             </div>
-            <Contact />
+            <Footer />
             <Copyright />
         </div>
     )
