@@ -27,7 +27,12 @@ export default function Navbar() {
     return (
         <div className="w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
             <div className="flex flex-col">
-                <h2 className="text-4xl font-medium">Tò Te</h2>
+                <h2
+                    className="text-4xl font-medium"
+                    onClick={() => navigate('/')}
+                >
+                    Tò Te
+                </h2>
                 <h3 className="font-medium">Túi in họa tiết cá tính </h3>
             </div>
             {/* HIDDEN NAV */}
@@ -57,8 +62,8 @@ export default function Navbar() {
                     Liên hệ
                 </span>
             </div>
-            {/* FULL RIGHT */}
-            <div className="relative  sm:space-x-5  flex flex-col-reverse sm:flex-row">
+            {/*  RIGHT */}
+            <div className="relative  sm:space-x-5  flex flex-col-reverse  sm:items-center sm:flex-row">
                 {/* search bar */}
                 <div
                     className={`flex items-center ${
@@ -120,7 +125,17 @@ export default function Navbar() {
                     />
                 </div>
                 <span className="font-medium hidden sm:flex">Đ.Nhập</span>
-                <ShoppingCartIcon onClick={handleOpenCart} />
+                <div>
+                    <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
+                        <ShoppingCartIcon
+                            onClick={handleOpenCart}
+                            className="w-9 h-9"
+                            // style={{ width: '2.2rem', height: '2.2rem' }}
+                        />
+
+                        <span className="sm:hidden text-4xl">&#9776;</span>
+                    </div>
+                </div>
             </div>
 
             {/* OPEN CART */}

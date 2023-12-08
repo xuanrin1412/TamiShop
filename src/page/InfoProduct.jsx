@@ -6,6 +6,23 @@ import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
 
 export default function InfoProduct() {
+    // const [selectedColor, setSelectedColor] = useState('blue')
+
+    // // Mapping màu và ảnh tương ứng
+    // const colorImages = {
+    //     blue: 'https://static.wixstatic.com/media/45d10e_dd5d9543998c4c0f9ecf120fac20ffb0~mv2.jpg',
+    //     red: 'https://w7.pngwing.com/pngs/114/579/png-transparent-pink-cross-stroke-ink-brush-pen-red-ink-brush-ink-leave-the-material-text.png',
+    //     green: 'https://example.com/green-image.jpg',
+    //     // Thêm các màu và ảnh tương ứng khác
+    // }
+
+    // const handleColorChange = color => {
+    //     setSelectedColor(color)
+    // }
+
+    // const handleSubImgClick = newMainImg => {
+    //     setSelectedColor(newMainImg)
+    // }
     return (
         <div>
             <Navbar />
@@ -24,12 +41,88 @@ export default function InfoProduct() {
                     <div className="flex space-x-4 ">
                         {/*LEFT*/}
                         <div className="w-1/2 flex flex-col">
-                            <div className=" h-124   w-124">
+                            {/* <div> */}
+                            {/* Chọn màu */}
+                            {/* <div className="flex p-5 space-x-6">
+                                    <div
+                                        className={`h-16 w-16 border object-cover cursor-pointer ${
+                                            selectedColor === 'blue'
+                                                ? 'border-blue-500'
+                                                : ''
+                                        }`}
+                                        onClick={() =>
+                                            handleColorChange('blue')
+                                        }
+                                    >
+                                        Blue
+                                    </div>
+                                    <div
+                                        className={`h-16 w-16 border object-cover cursor-pointer ${
+                                            selectedColor === 'red'
+                                                ? 'border-red-500'
+                                                : ''
+                                        }`}
+                                        onClick={() => handleColorChange('red')}
+                                    >
+                                        Red
+                                    </div>
+                                    <div
+                                        className={`h-16 w-16 border object-cover cursor-pointer ${
+                                            selectedColor === 'green'
+                                                ? 'border-green-500'
+                                                : ''
+                                        }`}
+                                        onClick={() =>
+                                            handleColorChange('green')
+                                        }
+                                    >
+                                        Green
+                                    </div> */}
+                            {/* Thêm các màu khác */}
+                            {/* </div> */}
+
+                            {/* Main IMG */}
+                            {/* <div className="h-124 w-124">
+                                    <img
+                                        src={colorImages[selectedColor]}
+                                        alt=""
+                                    />
+                                </div> */}
+
+                            {/* SUB IMG */}
+                            {/* <div className="flex p-5 space-x-6">
+                                    <div
+                                        className="h-16 w-16 border object-cover cursor-pointer"
+                                        onClick={() =>
+                                            handleSubImgClick('blue')
+                                        }
+                                    >
+                                        <img src={colorImages.blue} alt="" />
+                                    </div>
+                                    <div
+                                        className="h-16 w-16 border object-cover cursor-pointer"
+                                        onClick={() => handleSubImgClick('red')}
+                                    >
+                                        <img src={colorImages.red} alt="" />
+                                    </div>
+                                    <div
+                                        className="h-16 w-16 border object-cover cursor-pointer"
+                                        onClick={() =>
+                                            handleSubImgClick('green')
+                                        }
+                                    >
+                                        <img src={colorImages.green} alt="" />
+                                    </div> */}
+                            {/* Thêm các ảnh con khác */}
+                            {/* </div> */}
+                            {/* </div> */}
+                            <div className=" h-124  w-124">
                                 <img
                                     src="https://static.wixstatic.com/media/45d10e_dd5d9543998c4c0f9ecf120fac20ffb0~mv2.jpg/v1/fill/w_675,h_675,al_c,q_85,usm_0.66_1.00_0.01,enc_auto/45d10e_dd5d9543998c4c0f9ecf120fac20ffb0~mv2.jpg"
                                     alt=""
                                 />
                             </div>
+
                             <div className="flex p-5 space-x-6">
                                 <div className="h-16 w-16 border  object-cover">
                                     <img

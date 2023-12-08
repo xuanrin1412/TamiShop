@@ -1,7 +1,9 @@
 import { Clear } from '@mui/icons-material'
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 export default function QuickViewCartItem() {
+    const navigate = useNavigate()
     const [quantity, setQuantity] = useState(1)
 
     const decreaseQuantity = () => {
@@ -66,7 +68,10 @@ export default function QuickViewCartItem() {
                 <div className="p-4 bg-white  border-t-2 border text-3xl font-bold">
                     Tổng Tiền : <span>500 VND</span>
                 </div>
-                <div className="p-2 m-5 text-white  bg-black hover:opacity-80 cursor-pointer  ">
+                <div
+                    className="p-2 m-5 text-white  bg-black hover:opacity-80 cursor-pointer  "
+                    onClick={() => navigate('/cart')}
+                >
                     Xem giỏ hàng
                 </div>
             </div>
