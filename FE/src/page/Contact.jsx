@@ -33,7 +33,6 @@ export default function Contact() {
             )
             .then(
                 result => {
-                    console.log(result.text)
                     setDone(true)
                     // Clear the form after submission
                     setFormData({

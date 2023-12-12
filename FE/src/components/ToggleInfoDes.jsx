@@ -5,8 +5,6 @@ export default function ToggleInfoDes({ des, title }) {
     const [openInfoItem, setOpenInfoItem] = useState(false)
     const handleOpenItem = () => {
         setOpenInfoItem(!openInfoItem)
-
-        console.log(openInfoItem)
     }
     return (
         <div className="">

@@ -23,7 +23,7 @@ export default function Footer() {
                         Đăng ký nhận thư từ chúng tôi để không bỏ lỡ thông tin
                     </h2>
                     <div className=" mt-3 ">
-                        <label for="email" className="sm:mt-0  ">
+                        <label htmlFor="email" className="sm:mt-0  ">
                             Email
                         </label>
                         <form className="mt-1 flex flex-col sm:flex-row text-xl ">
