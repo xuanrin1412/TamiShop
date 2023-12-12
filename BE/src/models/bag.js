@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
             price: DataTypes.INTEGER,
             des: DataTypes.STRING,
             colorimg: DataTypes.ARRAY(DataTypes.JSON),
+            bestseller: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: false,
+            },
         },
         {
             sequelize,

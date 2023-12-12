@@ -21,8 +21,9 @@ module.exports = {
             colorimg: {
                 type: Sequelize.ARRAY(Sequelize.JSON),
             },
-            test: {
-                type: Sequelize.STRING,
+            bestseller: {
+                type: Sequelize.BOOLEAN,
+                defaultValue: false,
             },
             createdAt: {
                 allowNull: false,

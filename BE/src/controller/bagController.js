@@ -7,6 +7,7 @@ const createBag = async (req, res) => {
     const { price } = req.body
     const { des } = req.body
     const { colorimg } = req.body
+    const { bestseller } = req.body
 
     const isAdmin = req.user.admin
 
@@ -17,6 +18,7 @@ const createBag = async (req, res) => {
                 price,
                 des,
                 colorimg,
+                bestseller,
             })
 
             res.json({ newBag })
@@ -70,6 +72,17 @@ const deleteBag = async (req, res) => {
         console.log(error)
     }
 }
+//DELETE All BAG
+const deleteAllBag = async (req, res) => {
+    try {
+        const deleteAllBag = await db.Bag.destroy({ where: {} })
+        res.status(200).json({ message: 'Delete All !!' })
+        console.log(deleteAllBag)
+    } catch (error) {
+        res.status(500).json({ error })
+        console.log(error)
+    }
+}
 
 //UPDATE BAG
 const updateBag = async (req, res) => {
@@ -101,4 +114,11 @@ const updateBag = async (req, res) => {
         res.status(500).json({ message: "You are't admin" })
     }
 }
-module.exports = { createBag, getBag, deleteBag, updateBag, getOneBag }
+module.exports = {
+    createBag,
+    getBag,
+    deleteBag,
+    updateBag,
+    getOneBag,
+    deleteAllBag,
+}
