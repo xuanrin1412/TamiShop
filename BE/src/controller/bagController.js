@@ -7,18 +7,25 @@ const createBag = async (req, res) => {
     const { price } = req.body
     const { des } = req.body
     const { colorimg } = req.body
-    console.log(title, price, des, colorimg)
-    try {
-        const newBag = await db.Bag.create({
-            title,
-            price,
-            des,
-            colorimg,
-        })
-        res.json({ newBag })
-    } catch (error) {
-        res.status(500).json({ error })
-        console.log(error)
+
+    const isAdmin = req.user.admin
+
+    if (isAdmin == true) {
+        try {
+            const newBag = await db.Bag.create({
+                title,
+                price,
+                des,
+                colorimg,
+            })
+
+            res.json({ newBag })
+        } catch (error) {
+            res.status(500).json({ error })
+            console.log(error)
+        }
+    } else {
+        res.status(500).json({ message: "You are't admin" })
     }
 }
 
@@ -67,26 +74,31 @@ const deleteBag = async (req, res) => {
 //UPDATE BAG
 const updateBag = async (req, res) => {
     const { title, price, des, colorimg } = req.body
-    try {
-        const updateBag = await db.Bag.update(
-            {
-                title,
-                price,
-                des,
-                colorimg,
-            },
-            {
-                where: {
-                    id: req.params.idBag,
+    const isAdmin = req.user.admin
+    if (isAdmin == true) {
+        try {
+            const updateBag = await db.Bag.update(
+                {
+                    title,
+                    price,
+                    des,
+                    colorimg,
                 },
-                returning: true,
-            },
-        )
-        res.status(200).json({ message: 'Updated !' })
-        console.log(updateBag)
-    } catch (error) {
-        res.status(500).json({ error })
-        console.log(error)
+                {
+                    where: {
+                        id: req.params.idBag,
+                    },
+                    returning: true,
+                },
+            )
+            res.status(200).json({ message: 'Updated !' })
+            console.log(updateBag)
+        } catch (error) {
+            res.status(500).json({ error })
+            console.log(error)
+        }
+    } else {
+        res.status(500).json({ message: "You are't admin" })
     }
 }
 module.exports = { createBag, getBag, deleteBag, updateBag, getOneBag }
