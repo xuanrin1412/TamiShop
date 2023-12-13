@@ -3,13 +3,22 @@ import SearchIcon from '@mui/icons-material/Search'
 import Avatar from '@mui/material/Avatar'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import QuickViewCartItem from './QuickViewCartItem'
 
 export default function Navbar() {
     const navigate = useNavigate()
     const [isFocused, setIsFocused] = useState(false)
     const [openCartDemo, setOpenCartDemo] = useState(false)
+    const [activeNav, setActiveNav] = useState('cuahang')
+
+    const location = useLocation()
+    const path = location.pathname
+    console.log('path', path)
+
+    const handleClick = type => {
+        setActiveNav(type)
+    }
 
     const handleFocus = () => {
         setIsFocused(true)
@@ -36,32 +45,57 @@ export default function Navbar() {
                 <h3 className="font-medium">Túi in họa tiết cá tính </h3>
             </div>
             {/* HIDDEN NAV */}
-            <div className=" hidden sm:flex sm:space-x-5  ">
+            <div className="hidden sm:flex sm:space-x-5">
                 <span
-                    onClick={() => navigate('/')}
-                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] "
+                    onClick={() => {
+                        handleClick('cuahang')
+                        navigate('/#cuahang')
+                    }}
+                    className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                        activeNav === 'cuahang' && path === '/'
+                            ? 'activeNav'
+                            : ''
+                    }`}
                 >
                     <a href="#cuahang">Cửa hàng</a>
                 </span>
                 <span
-                    onClick={() => navigate('/')}
-                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
+                    onClick={() => {
+                        handleClick('gioithieu')
+                        navigate('/#gioithieu')
+                    }}
+                    className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                        activeNav === 'gioithieu' && path === '/'
+                            ? 'activeNav'
+                            : ''
+                    }`}
                 >
                     <a href="#gioithieu">Giới thiệu</a>
                 </span>
                 <span
-                    onClick={() => navigate('/question')}
-                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
+                    onClick={() => {
+                        navigate('/question')
+                        setActiveNav(activeNav === '')
+                    }}
+                    className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                        path === '/question' ? 'activeNav' : ''
+                    }`}
                 >
-                    <a href="#hoidap">Hỏi đáp</a>
+                    Hỏi đáp
                 </span>
                 <span
-                    onClick={() => navigate('/contact')}
-                    className="font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0]"
+                    onClick={() => {
+                        navigate('/contact')
+                        setActiveNav(activeNav === '')
+                    }}
+                    className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                        path === '/contact' ? 'activeNav' : ''
+                    }`}
                 >
                     Liên hệ
                 </span>
             </div>
+
             {/*  RIGHT */}
             <div className="relative  sm:space-x-5  flex flex-col-reverse  sm:items-center sm:flex-row">
                 {/* search bar */}

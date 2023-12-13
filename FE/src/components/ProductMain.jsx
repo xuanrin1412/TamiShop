@@ -49,7 +49,7 @@ export default function ProductMain() {
                             ''
                         )}
 
-                        <Link to={'infoProduct'}>
+                        <Link to={`/infoProduct/${dataItem.id}`}>
                             <div
                                 className="absolute bottom-0 left-0 bg-black-rgba p-3 w-full text-center duration-300 
                    translate-y-full opacity-0 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 "
