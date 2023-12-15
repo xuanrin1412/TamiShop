@@ -86,7 +86,7 @@ const deleteAllBag = async (req, res) => {
 
 //UPDATE BAG
 const updateBag = async (req, res) => {
-    const { title, price, des, colorimg } = req.body
+    const { title, price, des, colorimg, bestseller } = req.body
     const isAdmin = req.user.admin
     if (isAdmin == true) {
         try {
@@ -96,6 +96,7 @@ const updateBag = async (req, res) => {
                     price,
                     des,
                     colorimg,
+                    bestseller,
                 },
                 {
                     where: {
