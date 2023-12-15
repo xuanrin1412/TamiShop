@@ -11,13 +11,15 @@ import {
 } from '@mui/icons-material'
 import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
 
 export default function InfoProduct() {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
     const [dataInfo, setDataInfo] = useState([])
+    console.log('========================================')
+    console.log(' dataInfo.colorimg', dataInfo.colorimg)
     const [mainImg, setMainImg] = useState() //MAIN IMG
 
     // USESTATE OPEN OVERLAY PIC
@@ -52,6 +54,7 @@ export default function InfoProduct() {
     // HANLDE WHEN CLICK SUB IMG => TO MAIN IMG
     const handleSubImgClick = imgItem => {
         setMainImg(imgItem)
+
         console.log('imgSrc=', imgItem)
     }
 
@@ -63,6 +66,52 @@ export default function InfoProduct() {
     }
     const handleClosePic = () => {
         setOpenPic(!openPic)
+    }
+
+    // HANDLE CLICK COLOR ICON
+    const [selectedColor, setSelectedColor] = useState({ color: null, img: [] })
+    console.log('selectedColor', selectedColor)
+
+    const imgchoosed = selectedColor.img.map(imggg => imggg)
+    console.log('*******')
+    console.log('imgISchoosed', imgchoosed)
+
+    const colorchoosed = selectedColor.color
+    console.log('colorchoosed', colorchoosed)
+    console.log('*******')
+
+    const [activeColors, setActiveColors] = useState({})
+    console.log('activeColor', activeColors)
+
+    const handleColorClick = choosedColor => {
+        //****/ handle click color active color
+        const newActiveColors = {}
+        // Activate the clicked color
+        newActiveColors[choosedColor.color] = true
+        // Deactivate all other colors
+        dataInfo.colorimg.forEach(takeColor => {
+            if (takeColor.color !== choosedColor.color) {
+                newActiveColors[takeColor.color] = false
+            }
+        })
+        setActiveColors(newActiveColors)
+
+        //****/ handle click color show img
+        setSelectedColor({
+            color: choosedColor.color,
+            img: choosedColor.img.length > 0 ? [choosedColor.img[0]] : [],
+        })
+    }
+
+    // HANDLE OPEN TEXT
+    const [openTexts, setOpenTexts] = useState({})
+    const handleToggleText = id => {
+        setOpenTexts(prevOpenTexts => ({
+            ...Object.fromEntries(
+                Object.keys(prevOpenTexts).map(key => [key, false]),
+            ),
+            [id]: !prevOpenTexts[id],
+        }))
     }
 
     useEffect(() => {
@@ -98,8 +147,15 @@ export default function InfoProduct() {
                 <div className="max-w-5xl mx-auto  flex flex-col">
                     <div className="hidden sm:flex justify-between mb-7">
                         <div>
-                            <span className="font-medium">Trang chủ /</span>
-                            <span>{dataInfo.title} </span>
+                            <Link to={'/'}>
+                                <span className="font-medium">
+                                    Trang chủ /{' '}
+                                </span>
+                            </Link>
+
+                            <span className="text-gray-500">
+                                {dataInfo.title}
+                            </span>
                         </div>
                         <span className="pr-5">
                             <ArrowLeftOutlined className="text-xl" /> Trước |
@@ -109,12 +165,19 @@ export default function InfoProduct() {
                     <div className="relative flex flex-col space-y-4  sm:space-x-4 sm:flex-row ">
                         {/*MAIN PIC*/}
                         <div className="sm:w-1/2 flex flex-col">
-                            <div className="sm:h-124 sm:w-124">
-                                <img
-                                    src={mainImg || alllist[0]}
-                                    onClick={() => handleOpenPic(mainImg)}
-                                    alt=""
-                                />
+                            <div className="sm:h-124 sm:w-124 cursor-pointer">
+                                <div>
+                                    <img
+                                        src={
+                                            (selectedColor.img.length > 0 &&
+                                                selectedColor.img[0]) ||
+                                            mainImg ||
+                                            alllist[0]
+                                        }
+                                        onClick={() => handleOpenPic(mainImg)}
+                                        alt=""
+                                    />
+                                </div>
                             </div>
 
                             {/*SMALL PIC */}
@@ -182,10 +245,22 @@ export default function InfoProduct() {
                                                     >
                                                         {takeColor.color && (
                                                             <div
-                                                                className="h-4 w-4 rounded-xl border-gray-300 border-2 "
+                                                                className={` h-4 w-4 rounded-xl border-gray-300 border-2 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
+                                                                    activeColors[
+                                                                        takeColor
+                                                                            .color
+                                                                    ] === true
+                                                                        ? ' border-red-800 border-3 drop-shadow-lg'
+                                                                        : ''
+                                                                }`}
                                                                 style={{
                                                                     backgroundColor: `${takeColor.color}`,
                                                                 }}
+                                                                onClick={() =>
+                                                                    handleColorClick(
+                                                                        takeColor,
+                                                                    )
+                                                                }
                                                             ></div>
                                                         )}
                                                     </div>
@@ -199,6 +274,7 @@ export default function InfoProduct() {
                                         className=" border-2 border-gray-400 px-2 my-2 w-20 h-10"
                                         type="number"
                                         placeholder="1"
+                                        min="1"
                                     />
                                 </div>
                             </div>
@@ -219,6 +295,9 @@ export default function InfoProduct() {
                             </div>
 
                             <ToggleInfoDes
+                                id="text1"
+                                isOpen={openTexts['text1']}
+                                onToggle={handleToggleText}
                                 des={
                                     'Tôi là chi tiết sản phẩm. Tôi là nơi tuyệt vời để bổ sung chi tiết về sản phẩm của bạn như định cỡ, chất liệu, hướng dẫn chăm sóc và làm sạch. Đây cũng là nơi tuyệt vời để nói về điều làm cho sản phẩm này đặc biệt và khách hàng có thể hưởng lợi gì từ nó.'
                                 }
@@ -227,6 +306,9 @@ export default function InfoProduct() {
                             />
                             <hr className="w-full h-1 bg-gray-500" />
                             <ToggleInfoDes
+                                id="text2"
+                                isOpen={openTexts['text2']}
+                                onToggle={handleToggleText}
                                 des={
                                     'Tôi là chính sách Trả hàng và Hoàn tiền. Tôi là nơi tuyệt vời để cho khách hàng biết phải làm gì nếu họ không hài lòng với giao dịch mua. Có chính sách hoàn tiền hoặc đổi hàng rõ ràng là cách tuyệt vời để xây dựng lòng tin và trấn an khách hàng rằng họ có thể tự tin mua hàng.'
                                 }
@@ -234,6 +316,9 @@ export default function InfoProduct() {
                             />
                             <hr className="w-full h-1 bg-gray-500" />
                             <ToggleInfoDes
+                                id="text3"
+                                isOpen={openTexts['text3']}
+                                onToggle={handleToggleText}
                                 des={
                                     'Tôi là chính sách giao hàng. Tôi là một nơi tuyệt vời để cung cấp thêm thông tin về phương thức giao hàng, đóng gói và cước phí. Cung cấp thông tin đơn giản về chính sách giao hàng là cách tuyệt vời để xây dựng lòng tin và trấn an khách hàng rằng họ có thể tự tin mua hàng.'
                                 }
@@ -268,7 +353,7 @@ export default function InfoProduct() {
                             </div>
                             {/* CONTAIN IMG SLIDE */}
                             <div className=" max-h-full max-w-1/2  object-cover flex justify-center  bg-pink-500 ">
-                                <div className=" h-full overflow-hidden">
+                                <div className=" sm:h-[440px] h-full overflow-hidden">
                                     {alllist.map((imgg, index) => (
                                         <img
                                             className={
