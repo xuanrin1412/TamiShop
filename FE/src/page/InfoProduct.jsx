@@ -13,15 +13,20 @@ import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
 import { Link, useLocation } from 'react-router-dom'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { addToQuickVCart } from '../redux/quickVCartSlice'
 
 export default function InfoProduct() {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
     const [dataInfo, setDataInfo] = useState([])
-    console.log('========================================')
+    console.log('#################################################')
+    console.log('dataInfo', dataInfo)
     console.log(' dataInfo.colorimg', dataInfo.colorimg)
     const [mainImg, setMainImg] = useState() //MAIN IMG
+    console.log('mainImg******************', mainImg)
 
+    // đáng lẽ là main img nhueng lại set
     // USESTATE OPEN OVERLAY PIC
     const [openPic, setOpenPic] = useState(false)
     const [bigPic, setBigPic] = useState()
@@ -101,6 +106,9 @@ export default function InfoProduct() {
             color: choosedColor.color,
             img: choosedColor.img.length > 0 ? [choosedColor.img[0]] : [],
         })
+        setMainImg(
+            choosedColor.img.length > 0 ? choosedColor.img[0] : alllist[0],
+        )
     }
 
     // HANDLE OPEN TEXT
@@ -127,6 +135,7 @@ export default function InfoProduct() {
                                 ? response.data.getOneBag.colorimg[0].img[0]
                                 : '',
                         )
+
                         setArrayImg(
                             response.data.getOneBag.colorimg.map(takeimg =>
                                 takeimg.img.map(final => final),
@@ -138,7 +147,37 @@ export default function InfoProduct() {
             }
         }
         getProduct()
-    }, [id, bigPic])
+    }, [id, bigPic, mainImg, setMainImg, setArrayImg])
+
+    const [quanlity, setQuanlity] = useState(1)
+    console.log('quanlityinfo', quanlity)
+    console.log('quanlityinfotypeof', typeof quanlity)
+
+    //HANDLE ADD TO  CART
+    const dispatch = useDispatch()
+    const handleAddToCart = () => {
+        if (colorchoosed === null) {
+            const elements = document.getElementsByClassName('color')
+            // Loop through each element and set the style
+            for (const element of elements) {
+                element.innerHTML = 'Hãy chọn màu !!'
+                element.style.color = 'red'
+            }
+        } else {
+            dispatch(
+                addToQuickVCart({
+                    products: dataInfo,
+                    color: colorchoosed,
+                    imgChoosed: imgchoosed,
+                    quantity: quanlity,
+                    total: quanlity * dataInfo.price,
+                }),
+            )
+            console.log('handleAddToCart', dataInfo, colorchoosed, quanlity)
+            // Sau khi thêm vào giỏ hàng, reset colorchoosed và imgchoosed
+            setSelectedColor({ color: null, img: [] })
+        }
+    }
 
     return (
         <div>
@@ -234,7 +273,7 @@ export default function InfoProduct() {
                                 </div>
 
                                 <div>
-                                    <div className="font-medium">Màu</div>
+                                    <div className="font-medium color">Màu</div>
                                     <div className="flex  space-x-3">
                                         {dataInfo.colorimg &&
                                             dataInfo.colorimg.map(
@@ -275,13 +314,23 @@ export default function InfoProduct() {
                                         type="number"
                                         placeholder="1"
                                         min="1"
+                                        value={+quanlity}
+                                        onChange={e =>
+                                            setQuanlity(
+                                                parseInt(e.target.value, 10) ||
+                                                    0,
+                                            )
+                                        }
                                     />
                                 </div>
                             </div>
                             {/* BTN BUY */}
                             <div className="flex flex-col w-full space-y-3 ">
                                 <div className="flex">
-                                    <button className="bg-white border-2 border-black flex-1  p-3 sm:p-0">
+                                    <button
+                                        onClick={() => handleAddToCart()}
+                                        className="bg-white border-2 border-black flex-1  p-3 sm:p-0"
+                                    >
                                         Thêm vào giỏ hàng
                                     </button>
                                     <div className="hidden sm:block ml-4 p-3 bg-black text-white">

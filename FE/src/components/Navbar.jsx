@@ -5,11 +5,23 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useLocation, useNavigate } from 'react-router-dom'
 import QuickViewCartItem from './QuickViewCartItem'
+import { useSelector } from 'react-redux'
+import Badge from '@mui/material/Badge'
 
 export default function Navbar() {
     const navigate = useNavigate()
     const [isFocused, setIsFocused] = useState(false)
     const [openCartDemo, setOpenCartDemo] = useState(false)
+
+    const quantityProduct = useSelector(state => state.quickVCart.cartItem)
+    const testQuantity = quantityProduct.map(quantity => quantity.quantity)
+    const allQuantity = testQuantity.reduce(
+        (acc, currentValue) => acc + currentValue,
+        0,
+    )
+    console.log('resultQuantity', allQuantity)
+    console.log('quantityProduct', testQuantity)
+
     const [activeNav, setActiveNav] = useState('cuahang')
 
     const location = useLocation()
@@ -33,6 +45,7 @@ export default function Navbar() {
     const handleCloseCart = () => {
         setOpenCartDemo(false)
     }
+
     return (
         <div className="w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
             <div className="flex flex-col">
@@ -161,11 +174,13 @@ export default function Navbar() {
                 <span className="font-medium hidden sm:flex">Đ.Nhập</span>
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
-                        <ShoppingCartIcon
-                            onClick={handleOpenCart}
-                            className="w-9 h-9"
-                            // style={{ width: '2.2rem', height: '2.2rem' }}
-                        />
+                        <Badge badgeContent={allQuantity} color="primary">
+                            <ShoppingCartIcon
+                                onClick={handleOpenCart}
+                                className="w-9 h-9"
+                                // style={{ width: '2.2rem', height: '2.2rem' }}
+                            />
+                        </Badge>
 
                         <span className="sm:hidden text-4xl">&#9776;</span>
                     </div>
