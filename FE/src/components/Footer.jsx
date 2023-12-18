@@ -28,7 +28,7 @@ export default function Footer() {
                         </label>
                         <form className="mt-1 flex flex-col sm:flex-row text-xl ">
                             <input
-                                className=" max-w-[600px] sm:min-w-[600px] border-b-2 bg-transparent px-3"
+                                className=" flex-1 border-b-2 bg-transparent px-3"
                                 type="text"
                                 id="email"
                                 placeholder="Enter Your Email"

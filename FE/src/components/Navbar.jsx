@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
-import Avatar from '@mui/material/Avatar'
+
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -20,7 +20,7 @@ export default function Navbar() {
         0,
     )
     console.log('resultQuantity', allQuantity)
-    console.log('quantityProduct', testQuantity)
+    // console.log('quantityProduct', testQuantity)
 
     const [activeNav, setActiveNav] = useState('cuahang')
 
@@ -164,14 +164,35 @@ export default function Navbar() {
                     ''
                 )}
                 {/* avatar */}
-                <div className="hidden sm:block">
+                {/* <div className="hidden sm:block">
                     <Avatar
                         className="hidden sm:flex"
                         alt="Remy Sharp"
-                        src="https://scontent.fsgn5-2.fna.fbcdn.net/v/t39.30808-6/324584455_487810650192880_3422462454493528535_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=dd5e9f&_nc_eui2=AeG2KKxsy3K67OvqmZab_-tj5lEq_COPT3_mUSr8I49Pf4ztIrWxyRTzkDLUyGo3rMbllewwAwSmuAOtr_4rh1aj&_nc_ohc=ZrJeRK1Jq4gAX8HA0Mp&_nc_ht=scontent.fsgn5-2.fna&oh=00_AfCzbNIVNMNIuMVGBB6MBaCPyYnqHJwcmUVgETYcLB3erQ&oe=657324BB"
+                        src="https://api-private.atlassian.com/users/e764a2d1a95da6d51e2a798ee7c66e44/avatar"
                     />
-                </div>
-                <span className="font-medium hidden sm:flex">Đ.Nhập</span>
+                </div> */}
+                <span className="hidden font-medium  sm:flex space-x-3">
+                    <span>Đăng Nhập</span>
+                    <span className="h-6 w-1 bg-black"></span>
+                    <span>Đăng Kí</span>
+                </span>
+                <span className=" hidden font-medium  items-center space-x-2 ">
+                    <span>
+                        User:
+                        <span className=" text-xl text-red-500"> Xuan Rin</span>
+                    </span>
+                    <div className="hoverShowTooltip h-5 w-5  flex">
+                        <img
+                            className="h-full w-full"
+                            src="https://cdn-icons-png.flaticon.com/512/4400/4400629.png"
+                            alt=""
+                        />
+                        <span className="tooltipText">
+                            Click icon to Logout
+                        </span>
+                    </div>
+                </span>
+
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
                         <Badge badgeContent={allQuantity} color="primary">

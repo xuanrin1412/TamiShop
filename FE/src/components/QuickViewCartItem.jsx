@@ -1,12 +1,17 @@
 import { Clear } from '@mui/icons-material'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { decreaseProduct, increaseProduct } from '../redux/quickVCartSlice'
+import {
+    decreaseProduct,
+    increaseProduct,
+    removeProduct,
+} from '../redux/quickVCartSlice'
 
 export default function QuickViewCartItem() {
     const navigate = useNavigate()
 
     const cartItem = useSelector(state => state.quickVCart.cartItem) // state của toàn bộ hệ thống . tên key (configureStore),dữ liệu cụ thể trong slice counter
+    console.log('#### QUICK CART PAGE #######')
     console.log('takecartItem', cartItem)
 
     const allTotal = useSelector(state => state.quickVCart.allTotal)
@@ -34,12 +39,30 @@ export default function QuickViewCartItem() {
             }),
         )
     }
+
+    const removeProductItem = (productId, color) => {
+        console.log('removeProductItem****')
+        dispatch(
+            removeProduct({
+                productId: productId,
+                color: color,
+            }),
+        )
+        console.log(
+            'removeProductItem****dispatch',
+            dispatch(
+                removeProduct({
+                    productId: productId,
+                    color: color,
+                }),
+            ),
+        )
+    }
     return (
         <div className=" h-full ">
             {/* LIST ITEM IN CART */}
-            <div className="max-h-[72%] w-full  overflow-auto  scroll">
+            <div className="max-h-[59%] w-full  overflow-auto  scroll">
                 {/* ITEMS */}
-
                 {cartItem.map((data, index) => (
                     <div
                         onClick={() =>
@@ -94,14 +117,32 @@ export default function QuickViewCartItem() {
                         </div>
 
                         <div className="absolute right-4 top-0 h-full w-full flex justify-end items-center">
-                            <div className=" opacity-0 group-hover:opacity-100  cursor-pointer p-1 ">
+                            <div
+                                onClick={e => {
+                                    e.stopPropagation() // Ngăn chặn sự kiện navigate lan tỏa lên phần tử cha
+                                    removeProductItem(
+                                        data.products.id,
+                                        data.color,
+                                    )
+                                }}
+                                className=" opacity-0 group-hover:opacity-100  cursor-pointer p-1 "
+                            >
                                 <Clear />
                             </div>
                         </div>
                     </div>
                 ))}
-                <hr className="w-5/6 mx-auto h-px border-0 bg-gray-400" />
+                {/* <hr className="w-5/6 mx-auto h-px border-0 bg-gray-400" /> */}
             </div>
+
+            {cartItem.length === 0 && (
+                <div className=" text-center h-full w-full ">
+                    <img
+                        src="https://i.pinimg.com/736x/2e/ac/fa/2eacfa305d7715bdcd86bb4956209038.jpg"
+                        alt=""
+                    />
+                </div>
+            )}
 
             {/* TOTAL COST */}
             <div className="absolute right-0  bottom-0 z-50 text-2xl  w-full text-center">

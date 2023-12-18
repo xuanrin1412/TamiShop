@@ -54,7 +54,7 @@ export default function ProductMain() {
                                 className="absolute bottom-0 left-0 bg-black-rgba p-3 w-full text-center duration-300 
                    translate-y-full opacity-0 ease-in-out group-hover:translate-y-0 group-hover:opacity-100 "
                             >
-                                Xem nhanh
+                                Xem Chi Tiết
                             </div>
                         </Link>
                     </div>

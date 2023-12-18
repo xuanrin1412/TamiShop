@@ -55,7 +55,6 @@ export const quickVCartSlice = createSlice({
                 0,
             )
         },
-
         increaseProduct: (state, action) => {
             console.log('=============INCREASE========')
             const { productId, colorr, quantity } = action.payload
@@ -135,9 +134,36 @@ export const quickVCartSlice = createSlice({
                 )
             }
         },
+        removeProduct: (state, action) => {
+            const { productId, color } = action.payload
+
+            // Tìm vị trí của sản phẩm cần xóa trong mảng cartItem
+            const indexToRemove = state.cartItem.findIndex(
+                item => item.products.id === productId && item.color === color,
+            )
+
+            if (indexToRemove !== -1) {
+                // Tạo một bản sao mới của mảng cartItem mà không thay đổi state trực tiếp
+                const updatedCartItem = [...state.cartItem]
+                updatedCartItem.splice(indexToRemove, 1)
+
+                // Cập nhật state.cartItem với bản sao mới
+                state.cartItem = updatedCartItem
+
+                // Cập nhật lại tổng giá trị allTotal sau khi xóa sản phẩm
+                state.allTotal = state.cartItem.reduce(
+                    (acc, item) => acc + item.total,
+                    0,
+                )
+            }
+        },
     },
 })
 
-export const { addToQuickVCart, increaseProduct, decreaseProduct } =
-    quickVCartSlice.actions
+export const {
+    addToQuickVCart,
+    increaseProduct,
+    decreaseProduct,
+    removeProduct,
+} = quickVCartSlice.actions
 export default quickVCartSlice.reducer

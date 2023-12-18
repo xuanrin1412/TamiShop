@@ -20,30 +20,30 @@ export default function InfoProduct() {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
     const [dataInfo, setDataInfo] = useState([])
-    console.log('#################################################')
-    console.log('dataInfo', dataInfo)
-    console.log(' dataInfo.colorimg', dataInfo.colorimg)
+    console.log('######## INFOPRODUCT PAGE ##########')
+    //console.log('dataInfo', dataInfo)
+    // console.log(' dataInfo.colorimg', dataInfo.colorimg)
     const [mainImg, setMainImg] = useState() //MAIN IMG
-    console.log('mainImg******************', mainImg)
+    // console.log('mainImg', mainImg)
 
     // đáng lẽ là main img nhueng lại set
     // USESTATE OPEN OVERLAY PIC
     const [openPic, setOpenPic] = useState(false)
     const [bigPic, setBigPic] = useState()
-    console.log('bigPic', bigPic)
+    //console.log('bigPic', bigPic)
 
     // CONCAC LIST IMG
     const [arrayImg, setArrayImg] = useState([])
     const test1 = arrayImg.map(img => {
         return img
     })
-    console.log('test1', test1)
+    //console.log('test1', test1)
     const alllist = [].concat(...test1)
-    console.log('alllist', alllist)
+    //console.log('alllist', alllist)
 
     // HANLE OVERLAY SLIDE LEFT RIGHT
     const [currentIndexImg, setCurrentIndexImg] = useState(0)
-    console.log('currentIndexImg click to small pic', currentIndexImg)
+    //console.log('currentIndexImg click to small pic', currentIndexImg)
     const handleLeftRight = type => {
         if (type === 'left') {
             setCurrentIndexImg(prevIndex =>
@@ -58,9 +58,19 @@ export default function InfoProduct() {
 
     // HANLDE WHEN CLICK SUB IMG => TO MAIN IMG
     const handleSubImgClick = imgItem => {
-        setMainImg(imgItem)
+        // // Find the color corresponding to the clicked image
+        // const clickedColor = dataInfo.colorimg.find(color =>
+        //     color.img.includes(imgItem),
+        // )
 
-        console.log('imgSrc=', imgItem)
+        // // Update selectedColor state
+        // setSelectedColor({
+        //     color: clickedColor ? clickedColor.color : null,
+        //     img: clickedColor ? [imgItem] : [],
+        // })
+        console.log('Clicked on sub-image:', imgItem)
+        setMainImg(imgItem)
+        console.log('Main image set to:', imgItem)
     }
 
     //HANDLE OPEN CLOSE OVERLAY IMG
@@ -78,15 +88,12 @@ export default function InfoProduct() {
     console.log('selectedColor', selectedColor)
 
     const imgchoosed = selectedColor.img.map(imggg => imggg)
-    console.log('*******')
-    console.log('imgISchoosed', imgchoosed)
-
     const colorchoosed = selectedColor.color
-    console.log('colorchoosed', colorchoosed)
-    console.log('*******')
+    //console.log('imgISchoosed', imgchoosed)
+    //console.log('colorchoosed', colorchoosed)
 
     const [activeColors, setActiveColors] = useState({})
-    console.log('activeColor', activeColors)
+    //console.log('activeColor', activeColors)
 
     const handleColorClick = choosedColor => {
         //****/ handle click color active color
@@ -147,11 +154,11 @@ export default function InfoProduct() {
             }
         }
         getProduct()
-    }, [id, bigPic, mainImg, setMainImg, setArrayImg])
+    }, [id, bigPic])
 
     const [quanlity, setQuanlity] = useState(1)
     console.log('quanlityinfo', quanlity)
-    console.log('quanlityinfotypeof', typeof quanlity)
+    //console.log('quanlityinfotypeof', typeof quanlity)
 
     //HANDLE ADD TO  CART
     const dispatch = useDispatch()
@@ -204,7 +211,7 @@ export default function InfoProduct() {
                     <div className="relative flex flex-col space-y-4  sm:space-x-4 sm:flex-row ">
                         {/*MAIN PIC*/}
                         <div className="sm:w-1/2 flex flex-col">
-                            <div className="sm:h-124 sm:w-124 cursor-pointer">
+                            <div className="relative top-0 left-0 sm:h-124 sm:w-124 cursor-pointer hover: ">
                                 <div>
                                     <img
                                         src={
@@ -213,12 +220,18 @@ export default function InfoProduct() {
                                             mainImg ||
                                             alllist[0]
                                         }
-                                        onClick={() => handleOpenPic(mainImg)}
                                         alt=""
                                     />
                                 </div>
+                                <div
+                                    onClick={() => handleOpenPic(mainImg)}
+                                    className=" absolute top-0 left-0 flex items-center justify-center w-full h-full bg-transparent2 opacity-0 hover:opacity-100 "
+                                >
+                                    <h2 className=" textShadow font-medium text-black text-2xl">
+                                        Click to Zoom in
+                                    </h2>
+                                </div>
                             </div>
-
                             {/*SMALL PIC */}
                             <div className="flex">
                                 <div className="hidden sm:flex p-5 space-x-6">
@@ -251,7 +264,6 @@ export default function InfoProduct() {
                                     ></span>
                                 ))}
                             </div>
-
                             <div className="font-medium">{dataInfo.des}</div>
                         </div>
                         {/*RIGHT INFO*/}
@@ -284,7 +296,7 @@ export default function InfoProduct() {
                                                     >
                                                         {takeColor.color && (
                                                             <div
-                                                                className={` h-4 w-4 rounded-xl border-gray-300 border-2 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
+                                                                className={` h-6 w-6 rounded-xl border-gray-300 border-2 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
                                                                     activeColors[
                                                                         takeColor
                                                                             .color
