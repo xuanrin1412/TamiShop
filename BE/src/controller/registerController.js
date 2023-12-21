@@ -6,10 +6,27 @@ const createUser = async (req, res) => {
     const { userName } = req.body
     const { email } = req.body
     const { password } = req.body
-    console.log(userName, email, password)
+    const { admin } = req.body
+
+    console.log(userName, email, password, admin)
+
     try {
-        const newUser = await db.User.create({ userName, email, password })
-        res.json({ newUser })
+        const userE = await db.User.findOne({ where: { email: email } })
+        const userN = await db.User.findOne({ where: { userName: userName } })
+        if (userE) {
+            return res.json({ message: 'Email đã tồn tại' })
+        } else if (userN) {
+            return res.json({ message: 'Name đã tồn tại' })
+        } else {
+            const newUser = await db.User.create({
+                userName,
+                email,
+                password,
+                admin,
+            })
+            res.json({ newUser, message: 'Register successful' })
+            console.log('newUser', newUser)
+        }
     } catch (error) {
         res.status(500).json({ error })
         console.log(error)

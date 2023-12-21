@@ -6,7 +6,7 @@ const checklogin = (req, res, next) => {
 
     if (tokenCheckLogin) {
         const decode = jwt.verify(tokenCheckLogin, 'xuanrin')
-        //console.log('decode', decode)
+        // console.log('decode', decode)
         req.user = decode
         next()
     } else {

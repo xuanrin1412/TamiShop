@@ -8,18 +8,37 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            // define association here
+            Bag.belongsToMany(models.Cart, {
+                foreignKey: { name: 'bagId' },
+                through: 'ProductCart',
+            })
         }
     }
     Bag.init(
         {
-            title: DataTypes.STRING,
-            price: DataTypes.INTEGER,
-            des: DataTypes.STRING,
-            colorimg: DataTypes.ARRAY(DataTypes.JSON),
+            title: {
+                type: DataTypes.STRING,
+            },
+            price: {
+                type: DataTypes.INTEGER,
+            },
+            des: {
+                type: DataTypes.STRING,
+            },
+            colorimg: {
+                type: DataTypes.ARRAY(DataTypes.JSON),
+            },
             bestseller: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false,
+            },
+            createdAt: {
+                allowNull: false,
+                type: DataTypes.DATE,
+            },
+            updatedAt: {
+                allowNull: false,
+                type: DataTypes.DATE,
             },
         },
         {
