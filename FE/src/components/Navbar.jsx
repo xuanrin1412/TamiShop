@@ -1,25 +1,31 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
-
+import Avatar from '@mui/material/Avatar'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useLocation, useNavigate } from 'react-router-dom'
 import QuickViewCartItem from './QuickViewCartItem'
+import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
+import Cookies from 'js-cookie'
+import { jwtDecode } from 'jwt-decode'
+import axios from 'axios'
 
 export default function Navbar() {
     const navigate = useNavigate()
     const [isFocused, setIsFocused] = useState(false)
     const [openCartDemo, setOpenCartDemo] = useState(false)
+    const [userName, setUserName] = useState('')
+    const [openLogOutBox, setOpenLogOutBox] = useState(false)
 
-    const quantityProduct = useSelector(state => state.quickVCart.cartItem)
-    const testQuantity = quantityProduct.map(quantity => quantity.quantity)
-    const allQuantity = testQuantity.reduce(
-        (acc, currentValue) => acc + currentValue,
-        0,
-    )
-    console.log('resultQuantity', allQuantity)
+    // const quantityProduct = useSelector(state => state.quickVCart.cartItem)
+    // const testQuantity = quantityProduct.map(quantity => quantity.quantity)
+    // const allQuantity = testQuantity.reduce(
+    //     (acc, currentValue) => acc + currentValue,
+    //     0,
+    // )
+    // console.log('resultQuantity', allQuantity)
     // console.log('quantityProduct', testQuantity)
 
     const [activeNav, setActiveNav] = useState('cuahang')
@@ -46,8 +52,41 @@ export default function Navbar() {
         setOpenCartDemo(false)
     }
 
+    useEffect(() => {
+        const token = Cookies.get('tokenJWT')
+        console.log('token', token)
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token)
+                console.log('decodedToken', decodedToken)
+                setUserName(decodedToken.userName)
+            } catch (error) {
+                console.error('Error decoding token:', error)
+            }
+        }
+    }, [])
+
+    const handleOpenLogOut = () => {
+        setOpenLogOutBox(true)
+    }
+    const handleCloseLogOut = () => {
+        setOpenLogOutBox(false)
+    }
+    const handleLogOut = () => {
+        axios
+            .delete('http://localhost:8080/login/', { withCredentials: true })
+            .then(result => {
+                console.log('result log out', result.data.message)
+                if (result.data.message === 'Logout Success') {
+                    setOpenLogOutBox(false)
+                    navigate('/')
+                    setUserName('')
+                }
+            })
+    }
+
     return (
-        <div className="w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
+        <div className=" w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
             <div className="flex flex-col">
                 <h2
                     className="text-4xl font-medium"
@@ -171,31 +210,39 @@ export default function Navbar() {
                         src="https://api-private.atlassian.com/users/e764a2d1a95da6d51e2a798ee7c66e44/avatar"
                     />
                 </div> */}
-                <span className="hidden font-medium  sm:flex space-x-3">
-                    <span>Đăng Nhập</span>
-                    <span className="h-6 w-1 bg-black"></span>
-                    <span>Đăng Kí</span>
-                </span>
-                <span className=" hidden font-medium  items-center space-x-2 ">
-                    <span>
-                        User:
-                        <span className=" text-xl text-red-500"> Xuan Rin</span>
-                    </span>
-                    <div className="hoverShowTooltip h-5 w-5  flex">
-                        <img
-                            className="h-full w-full"
-                            src="https://cdn-icons-png.flaticon.com/512/4400/4400629.png"
-                            alt=""
-                        />
-                        <span className="tooltipText">
-                            Click icon to Logout
+
+                {userName ? (
+                    <span className="flex font-medium  items-center space-x-2 ">
+                        <span>
+                            User:
+                            <span className=" text-xl text-red-500 uppercase">
+                                {userName}
+                            </span>
                         </span>
-                    </div>
-                </span>
+                        <div className="h-5 w-5 object-cover flex">
+                            <img
+                                onClick={handleOpenLogOut}
+                                className="h-full w-full"
+                                src="https://cdn-icons-png.flaticon.com/512/4400/4400629.png"
+                                alt=""
+                            />
+                        </div>
+                    </span>
+                ) : (
+                    <span className=" font-medium flex space-x-3">
+                        <Link to={'/login'}>
+                            <span>Đăng Nhập</span>
+                        </Link>
+                        <span className="h-6 w-1 bg-black"></span>
+                        <Link to={'/register'}>
+                            <span>Đăng Kí</span>
+                        </Link>
+                    </span>
+                )}
 
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
-                        <Badge badgeContent={allQuantity} color="primary">
+                        <Badge badgeContent={4} color="primary">
                             <ShoppingCartIcon
                                 onClick={handleOpenCart}
                                 className="w-9 h-9"
@@ -223,7 +270,7 @@ export default function Navbar() {
                         <div className="bg-black  text-white flex justify-end items-center text-center p-7">
                             <span className="text-2xl flex-none">
                                 <ArrowForwardIosIcon
-                                    onClick={handleCloseCart}
+                                    onClick={() => handleCloseCart()}
                                 />
                             </span>
                             <span className="text-3xl flex-1">Giỏ hàng</span>
@@ -236,6 +283,33 @@ export default function Navbar() {
 
                         {/* INFO CART HAVE PRODUCT */}
                         <QuickViewCartItem />
+                    </div>
+                </div>
+            ) : (
+                ''
+            )}
+            {openLogOutBox ? (
+                <div className="absolute top-0 left-0 h-screen w-full bg-transparent2">
+                    <div className=" absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                        <div className="bg-white border-2 border-black p-8 space-y-4 rounded">
+                            <div className="text-xl font-medium">
+                                Bạn muốn đăng xuất ?
+                            </div>
+                            <div className="flex justify-between">
+                                <span
+                                    onClick={() => handleLogOut()}
+                                    className="border-2 p-2 px-4 cursor-pointer hover:bg-black hover:text-white"
+                                >
+                                    Yes
+                                </span>
+                                <span
+                                    onClick={() => handleCloseLogOut()}
+                                    className="border-2 p-2 px-4 cursor-pointer bg-blue-300  hover:bg-black hover:text-white"
+                                >
+                                    No
+                                </span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : (
