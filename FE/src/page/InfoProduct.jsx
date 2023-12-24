@@ -176,6 +176,8 @@ export default function InfoProduct() {
                 .catch(error => {
                     console.log(error, "Can't add to cart")
                 })
+
+            setSelectedColor({ color: null, img: [] })
         }
     }
 
@@ -289,12 +291,12 @@ export default function InfoProduct() {
                                                     >
                                                         {takeColor.color && (
                                                             <div
-                                                                className={` h-6 w-6 rounded-xl border-gray-300 border-2 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
+                                                                className={` h-8 w-8 rounded-full border-gray-300 border-4 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
                                                                     activeColors[
                                                                         takeColor
                                                                             .color
                                                                     ] === true
-                                                                        ? ' border-red-800 border-3 drop-shadow-lg'
+                                                                        ? ' border-[#ee5253] border-4 drop-shadow-lg  '
                                                                         : ''
                                                                 }`}
                                                                 style={{

@@ -1,5 +1,5 @@
 import { Clear } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
     fetchDeleteOProduct,
@@ -11,12 +11,16 @@ import {
 import { useEffect } from 'react'
 
 export default function QuickViewCartItem() {
+    const location = useLocation()
+    const id = location.pathname.split('/')[2]
+    console.log('id in quick cart ', id)
     const dispatch = useDispatch()
     const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
     const totalAll = useSelector(state => state.Cart.totalAll)
     console.log('totalAll', totalAll)
     console.log('cartItems quickcart', cartItems)
 
+    //REMOVE PRODUCT
     const handleRemoveProduct = async (productId, color) => {
         try {
             await dispatch(fetchDeleteOProduct({ productId, color }))
@@ -26,7 +30,7 @@ export default function QuickViewCartItem() {
             console.error('Error removing product:', error)
         }
     }
-
+    //INCEASE PRODUCT
     const handleInceaseQuantity = async (productId, color) => {
         try {
             await dispatch(fetchIncreaseQuantity({ productId, color }))
@@ -36,7 +40,7 @@ export default function QuickViewCartItem() {
             console.error('Error increasing quantity:', error)
         }
     }
-
+    //DECREASE PRODUCT
     const handleDeceaseQuantity = async (productId, color) => {
         try {
             await dispatch(fetchDecreaseQuantity({ productId, color }))
@@ -47,6 +51,7 @@ export default function QuickViewCartItem() {
         }
     }
 
+    //DISPATCH TO TAKE DATA
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -72,9 +77,9 @@ export default function QuickViewCartItem() {
                 {cartItems &&
                     cartItems.map((data, index) => (
                         <div
-                            // onClick={() =>
-                            //     navigate(`/infoProduct/${data.Bag.id}`)
-                            // }
+                            onClick={() =>
+                                navigate(`/infoProduct/${data.Bag.id}`)
+                            }
                             key={data.id}
                             className="relative p-6 flex group"
                         >
@@ -137,7 +142,7 @@ export default function QuickViewCartItem() {
                     ))}
                 {/* <hr className="w-5/6 mx-auto h-px border-0 bg-gray-400" /> */}
             </div>
-
+            {/* WHEN DONT HAVE PRODUCT IN CART DISPLAY THIS */}
             {cartItems.length === 0 && (
                 <div className=" text-center h-full w-full ">
                     <img
