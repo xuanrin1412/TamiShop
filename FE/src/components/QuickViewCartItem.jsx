@@ -11,9 +11,7 @@ import {
 import { useEffect } from 'react'
 
 export default function QuickViewCartItem() {
-    const location = useLocation()
-    const id = location.pathname.split('/')[2]
-    console.log('id in quick cart ', id)
+    console.log('#### QUICK CART PAGE #######')
     const dispatch = useDispatch()
     const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
     const totalAll = useSelector(state => state.Cart.totalAll)
@@ -67,8 +65,6 @@ export default function QuickViewCartItem() {
 
     const navigate = useNavigate()
 
-    console.log('#### QUICK CART PAGE #######')
-
     return (
         <div className=" h-full ">
             {/* LIST ITEM IN CART */}
@@ -103,24 +99,26 @@ export default function QuickViewCartItem() {
                                                 ? ' bg-gray-100 text-gray-300 '
                                                 : ''
                                         } `}
-                                        onClick={() =>
+                                        onClick={e => {
+                                            e.stopPropagation() // Stop the event from reaching the parent div
                                             handleDeceaseQuantity(
                                                 data.id,
                                                 data.color,
                                             )
-                                        }
+                                        }}
                                     >
                                         -
                                     </button>
                                     <div>{data.quantity}</div>
                                     <button
                                         className="px-3 py-1  "
-                                        onClick={() =>
+                                        onClick={e => {
+                                            e.stopPropagation() // Stop the event from reaching the parent div
                                             handleInceaseQuantity(
                                                 data.id,
                                                 data.color,
                                             )
-                                        }
+                                        }}
                                     >
                                         +
                                     </button>

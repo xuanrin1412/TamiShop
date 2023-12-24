@@ -109,7 +109,7 @@ const increaseProduct = async (req, res) => {
         // Increase the quantity by 1
         await existingCartItem.update({
             quantity: newQuantity,
-            total: newQuantity * existingCartItem.price, // Update the total based on the new quantity
+            total: newQuantity * existingCartItem.price,
         })
 
         // Optionally, you can return the updated cart to the client
@@ -147,10 +147,9 @@ const decreaseProduct = async (req, res) => {
         // Increase the quantity by 1
         await existingCartItem.update({
             quantity: newQuantity,
-            total: newQuantity * existingCartItem.price, // Update the total based on the new quantity
+            total: newQuantity * existingCartItem.price,
         })
 
-        // Optionally, you can return the updated cart to the client
         const updatedCart = await db.ProductCart.findAll({
             where: { cartId: existingCartItem.cartId },
             include: {

@@ -82,6 +82,7 @@ export const CartSlice = createSlice({
         items: [],
         status: 'idle',
         error: null,
+        quantity: 0,
     },
     reducers: {
         // decreaseProduct: (state, action) => {

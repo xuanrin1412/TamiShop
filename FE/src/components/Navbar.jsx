@@ -6,11 +6,12 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useLocation, useNavigate } from 'react-router-dom'
 import QuickViewCartItem from './QuickViewCartItem'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Badge from '@mui/material/Badge'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
+import { fetchUserCartProduct } from '../redux/cartSlice'
 
 export default function Navbar() {
     const navigate = useNavigate()
@@ -19,14 +20,26 @@ export default function Navbar() {
     const [userName, setUserName] = useState('')
     const [openLogOutBox, setOpenLogOutBox] = useState(false)
 
-    // const quantityProduct = useSelector(state => state.quickVCart.cartItem)
-    // const testQuantity = quantityProduct.map(quantity => quantity.quantity)
-    // const allQuantity = testQuantity.reduce(
-    //     (acc, currentValue) => acc + currentValue,
-    //     0,
-    // )
-    // console.log('resultQuantity', allQuantity)
-    // console.log('quantityProduct', testQuantity)
+    const dispatch = useDispatch()
+    const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
+    console.log('cartItems navbar ====', cartItems)
+    const arrayTotalQuantity = cartItems && cartItems.map(item => item.quantity)
+    const totalQuantity = arrayTotalQuantity.reduce(
+        (acc, item) => acc + item,
+        0,
+    )
+    console.log('totalQuantity', totalQuantity)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchUserCartProduct())
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
+    }, [totalQuantity, dispatch])
 
     const [activeNav, setActiveNav] = useState('cuahang')
 
@@ -242,7 +255,7 @@ export default function Navbar() {
 
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
-                        <Badge badgeContent={4} color="primary">
+                        <Badge badgeContent={totalQuantity} color="primary">
                             <ShoppingCartIcon
                                 onClick={handleOpenCart}
                                 className="w-9 h-9"

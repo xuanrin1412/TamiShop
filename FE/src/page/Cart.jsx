@@ -1,9 +1,16 @@
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Clear } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
+import {
+    fetchDecreaseQuantity,
+    fetchDeleteOProduct,
+    fetchIncreaseQuantity,
+    fetchTotalAll,
+    fetchUserCartProduct,
+} from '../redux/cartSlice'
 // import {
 //     decreaseProduct,
 //     increaseProduct,
@@ -11,41 +18,57 @@ import { useDispatch, useSelector } from 'react-redux'
 // } from '../redux/quickVCartSlice'
 
 export default function Cart() {
-    const cartItem = useSelector(state => state.quickVCart.cartItem)
     console.log('#### CART PAGE #######')
-    console.log('takecartItem===Cartpage', cartItem)
     const dispatch = useDispatch()
-    const allTotal = useSelector(state => state.quickVCart.allTotal)
-    console.log('cart allTotal', allTotal)
+    const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
+    const totalAll = useSelector(state => state.Cart.totalAll)
+    console.log('totalAll', totalAll)
+    console.log('takecartItem===Cartpage', cartItems)
 
-    // const increaseQuantity = (productId, colorr) => {
-    //     dispatch(
-    //         increaseProduct({
-    //             productId: productId,
-    //             colorr: colorr,
-    //             quantity: 1,
-    //         }),
-    //     )
-    // }
-    // const decreaseQuantity = (productId, colorr) => {
-    //     dispatch(
-    //         decreaseProduct({
-    //             productId: productId,
-    //             colorr: colorr,
-    //             quantity: 1,
-    //         }),
-    //     )
-    // }
+    //REMOVE PRODUCT
+    const handleRemoveProduct = async (productId, color) => {
+        try {
+            await dispatch(fetchDeleteOProduct({ productId, color }))
+            await dispatch(fetchUserCartProduct())
+            await dispatch(fetchTotalAll())
+        } catch (error) {
+            console.error('Error removing product:', error)
+        }
+    }
+    //INCEASE PRODUCT
+    const handleInceaseQuantity = async (productId, color) => {
+        try {
+            await dispatch(fetchIncreaseQuantity({ productId, color }))
+            await dispatch(fetchUserCartProduct())
+            await dispatch(fetchTotalAll())
+        } catch (error) {
+            console.error('Error increasing quantity:', error)
+        }
+    }
+    //DECREASE PRODUCT
+    const handleDeceaseQuantity = async (productId, color) => {
+        try {
+            await dispatch(fetchDecreaseQuantity({ productId, color }))
+            await dispatch(fetchUserCartProduct())
+            await dispatch(fetchTotalAll())
+        } catch (error) {
+            console.error('Error decreasing quantity:', error)
+        }
+    }
 
-    // const removeProductItem = (productId, color) => {
-    //     console.log('removeProductItem****')
-    //     dispatch(
-    //         removeProduct({
-    //             productId: productId,
-    //             color: color,
-    //         }),
-    //     )
-    // }
+    //DISPATCH TO TAKE DATA
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchUserCartProduct())
+                await dispatch(fetchTotalAll())
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+
+        fetchData()
+    }, [dispatch])
 
     return (
         <div>
@@ -58,7 +81,7 @@ export default function Cart() {
                             Giỏ hàng của tôi
                         </div>
 
-                        {cartItem.map((data, index) => (
+                        {cartItems.map((data, index) => (
                             <div key={index}>
                                 <hr className="border-0 h-[2px] bg-[#D0D0D0] w-full " />
                                 {/* ITEMS */}
@@ -67,18 +90,16 @@ export default function Cart() {
                                         <div className="h-100 w-100 border">
                                             <img
                                                 className="h-full w-full object-cover"
-                                                src={data.imgChoosed}
+                                                src={data.img}
                                                 alt=""
                                             />
                                         </div>
                                         <div>
                                             <div className="font-bold mb-3">
-                                                {data.products.title}
+                                                {data.Bag.title}
                                             </div>
                                             <div>
-                                                <div>
-                                                    {data.products.price} VND
-                                                </div>
+                                                <div>{data.price} VND</div>
                                                 <div className="text-gray-500">
                                                     Màu: {data.color}
                                                 </div>
@@ -96,24 +117,26 @@ export default function Cart() {
                                                         ? ' bg-gray-100 text-gray-300 '
                                                         : ''
                                                 } `}
-                                                // onClick={() =>
-                                                //     decreaseQuantity(
-                                                //         data.products.id,
-                                                //         data.color,
-                                                //     )
-                                                // }
+                                                onClick={e => {
+                                                    e.stopPropagation() // Stop the event from reaching the parent div
+                                                    handleDeceaseQuantity(
+                                                        data.id,
+                                                        data.color,
+                                                    )
+                                                }}
                                             >
                                                 -
                                             </button>
                                             <span>{data.quantity}</span>
                                             <button
                                                 className="px-3 py-[2px]"
-                                                // onClick={() =>
-                                                //     increaseQuantity(
-                                                //         data.products.id,
-                                                //         data.color,
-                                                //     )
-                                                // }
+                                                onClick={e => {
+                                                    e.stopPropagation() // Stop the event from reaching the parent div
+                                                    handleInceaseQuantity(
+                                                        data.id,
+                                                        data.color,
+                                                    )
+                                                }}
                                             >
                                                 +
                                             </button>
@@ -124,10 +147,10 @@ export default function Cart() {
                                         <span
                                             onClick={e => {
                                                 e.stopPropagation() // Ngăn chặn sự kiện navigate lan tỏa lên phần tử cha
-                                                // removeProductItem(
-                                                //     data.products.id,
-                                                //     data.color,
-                                                // )
+                                                handleRemoveProduct(
+                                                    data.id,
+                                                    data.color,
+                                                )
                                             }}
                                             className=" cursor-pointer"
                                         >
@@ -149,7 +172,7 @@ export default function Cart() {
                         <div className="mt-7 space-y-2">
                             <div className="flex justify-between font-bold">
                                 <span>Tổng từng phần</span>
-                                <span>{allTotal} VND</span>
+                                <span>{totalAll} VND</span>
                             </div>
                             <div className="flex justify-between font-bold">
                                 <span>Tiền Ship</span>
@@ -163,7 +186,7 @@ export default function Cart() {
                         <hr className="mt-2 border-0 h-[2px] bg-[#D0D0D0] " />
                         <div className="my-3 font-bold text-xl flex justify-between">
                             <span>Tổng</span>
-                            <span>{allTotal} VND</span>
+                            <span>{totalAll} VND</span>
                         </div>
                         <button className="w-full bg-black text-white py-2 hover:opacity-80">
                             Thanh Toán

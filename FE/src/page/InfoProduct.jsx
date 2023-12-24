@@ -13,6 +13,8 @@ import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { fetchUserCartProduct } from '../redux/cartSlice'
 
 export default function InfoProduct() {
     const location = useLocation()
@@ -21,6 +23,7 @@ export default function InfoProduct() {
     const navigate = useNavigate()
     console.log('######## INFOPRODUCT PAGE ##########')
     const [mainImg, setMainImg] = useState() //MAIN IMG
+    const dispatch = useDispatch()
 
     // USESTATE OPEN OVERLAY PIC
     const [openPic, setOpenPic] = useState(false)
@@ -155,6 +158,12 @@ export default function InfoProduct() {
                 element.style.color = 'red'
             }
         } else {
+            const elements = document.getElementsByClassName('color')
+            // Loop through each element and set the style
+            for (const element of elements) {
+                element.innerHTML = ''
+                element.style.color = ''
+            }
             await axios
                 .post(
                     `http://localhost:8080/product_cart/addToCart/`,
@@ -176,7 +185,7 @@ export default function InfoProduct() {
                 .catch(error => {
                     console.log(error, "Can't add to cart")
                 })
-
+            dispatch(fetchUserCartProduct())
             setSelectedColor({ color: null, img: [] })
         }
     }
@@ -291,12 +300,12 @@ export default function InfoProduct() {
                                                     >
                                                         {takeColor.color && (
                                                             <div
-                                                                className={` h-8 w-8 rounded-full border-gray-300 border-4 hover:border-red-800 hover:border-3 hover:drop-shadow-lg ${
+                                                                className={` h-8 w-8 rounded-full border-gray-300 border-4 hover:border-[#e74c3c] hover:border-3 hover:drop-shadow-lg ${
                                                                     activeColors[
                                                                         takeColor
                                                                             .color
                                                                     ] === true
-                                                                        ? ' border-[#ee5253] border-4 drop-shadow-lg  '
+                                                                        ? 'border-[#e74c3c] border-3 drop-shadow-lg'
                                                                         : ''
                                                                 }`}
                                                                 style={{
