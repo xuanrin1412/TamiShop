@@ -161,7 +161,7 @@ export default function InfoProduct() {
             const elements = document.getElementsByClassName('color')
             // Loop through each element and set the style
             for (const element of elements) {
-                element.innerHTML = ''
+                element.innerHTML = 'Màu'
                 element.style.color = ''
             }
             await axios
@@ -187,6 +187,7 @@ export default function InfoProduct() {
                 })
             dispatch(fetchUserCartProduct())
             setSelectedColor({ color: null, img: [] })
+            setActiveColors({})
         }
     }
 
@@ -300,12 +301,12 @@ export default function InfoProduct() {
                                                     >
                                                         {takeColor.color && (
                                                             <div
-                                                                className={` h-8 w-8 rounded-full border-gray-300 border-4 hover:border-[#e74c3c] hover:border-3 hover:drop-shadow-lg ${
+                                                                className={` h-8 w-8 rounded-full border-gray-300 border-4 hover:border-red-400 hover:border-3 hover:drop-shadow-lg ${
                                                                     activeColors[
                                                                         takeColor
                                                                             .color
                                                                     ] === true
-                                                                        ? 'border-[#e74c3c] border-3 drop-shadow-lg'
+                                                                        ? 'border-red-400 border-3 drop-shadow-lg'
                                                                         : ''
                                                                 }`}
                                                                 style={{

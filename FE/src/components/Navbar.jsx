@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
-import Avatar from '@mui/material/Avatar'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -19,6 +18,8 @@ export default function Navbar() {
     const [openCartDemo, setOpenCartDemo] = useState(false)
     const [userName, setUserName] = useState('')
     const [openLogOutBox, setOpenLogOutBox] = useState(false)
+    const [bestseller, setBestseller] = useState([])
+    console.log('bestseller useStatwe', bestseller)
 
     const dispatch = useDispatch()
     const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
@@ -29,17 +30,6 @@ export default function Navbar() {
         0,
     )
     console.log('totalQuantity', totalQuantity)
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await dispatch(fetchUserCartProduct())
-            } catch (error) {
-                console.error('Error fetching data:', error)
-            }
-        }
-
-        fetchData()
-    }, [totalQuantity, dispatch])
 
     const [activeNav, setActiveNav] = useState('cuahang')
 
@@ -54,9 +44,6 @@ export default function Navbar() {
     const handleFocus = () => {
         setIsFocused(true)
     }
-    const handleBlur = () => {
-        setIsFocused(false)
-    }
 
     const handleOpenCart = () => {
         setOpenCartDemo(true)
@@ -65,25 +52,17 @@ export default function Navbar() {
         setOpenCartDemo(false)
     }
 
-    useEffect(() => {
-        const token = Cookies.get('tokenJWT')
-        console.log('token', token)
-        if (token) {
-            try {
-                const decodedToken = jwtDecode(token)
-                console.log('decodedToken', decodedToken)
-                setUserName(decodedToken.userName)
-            } catch (error) {
-                console.error('Error decoding token:', error)
-            }
-        }
-    }, [])
-
     const handleOpenLogOut = () => {
         setOpenLogOutBox(true)
     }
     const handleCloseLogOut = () => {
         setOpenLogOutBox(false)
+    }
+
+    const handleNavigate = id => {
+        console.log('hiii')
+        navigate(`/infoProduct/${id}`)
+        console.log('handleNavigate', navigate(`/infoProduct/${id}`))
     }
     const handleLogOut = () => {
         axios
@@ -98,6 +77,49 @@ export default function Navbar() {
             })
     }
 
+    const handleBodyClick = event => {
+        if (!event.target.closest('.bestseller-area')) {
+            setIsFocused(false)
+        }
+    }
+    useEffect(() => {
+        const token = Cookies.get('tokenJWT')
+        console.log('token', token)
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token)
+                console.log('decodedToken', decodedToken)
+                setUserName(decodedToken.userName)
+            } catch (error) {
+                console.error('Error decoding token:', error)
+            }
+        }
+
+        const fetchData = async () => {
+            try {
+                await dispatch(fetchUserCartProduct())
+            } catch (error) {
+                console.error('Error fetching data:', error)
+            }
+        }
+        fetchData()
+
+        const bestsellerapi = async () => {
+            await axios
+                .get('http://localhost:8080/bag/getBestSeller/')
+                .then(response => {
+                    setBestseller(response.data.getBestSeller)
+                })
+                .catch(error => {
+                    console.error('Error fetching Featured products:', error)
+                })
+        }
+        bestsellerapi()
+
+        document.body.addEventListener('click', handleBodyClick)
+        return () => document.body.removeEventListener('click', handleBodyClick)
+    }, [totalQuantity, dispatch])
+
     return (
         <div className=" w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
             <div className="flex flex-col">
@@ -109,7 +131,7 @@ export default function Navbar() {
                 </h2>
                 <h3 className="font-medium">Túi in họa tiết cá tính </h3>
             </div>
-            {/* HIDDEN NAV */}
+            {/*NAV BAR*/}
             <div className="hidden sm:flex sm:space-x-5">
                 <span
                     onClick={() => {
@@ -162,10 +184,10 @@ export default function Navbar() {
             </div>
 
             {/*  RIGHT */}
-            <div className="relative  sm:space-x-5  flex flex-col-reverse  sm:items-center sm:flex-row">
-                {/* search bar */}
+            <div className="  relative  sm:space-x-5  flex flex-col-reverse  sm:items-center sm:flex-row">
+                {/*SEARCH BAR*/}
                 <div
-                    className={`flex items-center ${
+                    className={`bestseller-area flex items-center ${
                         isFocused ? 'border-b-0' : 'border-b-2 border-black'
                     }`}
                 >
@@ -177,41 +199,41 @@ export default function Navbar() {
                         type="text"
                         placeholder="Tìm kiếm..."
                         onFocus={handleFocus}
-                        onBlur={handleBlur}
                     />
                 </div>
+                {/* FOCUS TOGGLE BEST SELLER PRODUCT */}
                 {isFocused ? (
-                    <div className="absolute top-full min-w-[189px] max-w-[250px] -left-2 bg-white z-50">
-                        <div className="font-medium p-3">
-                            Sản phẩm thịnh hành
+                    <>
+                        <div className=" absolute top-full min-w-[189px] max-w-[250px] max-h-72 overflow-y-scroll scroll -left-2 bg-white z-50  boxShadow">
+                            <div className="font-medium p-3">
+                                Sản phẩm thịnh hành
+                            </div>
+                            {/* ITEM BESTSELLER */}
+                            {bestseller.map((item, index) => (
+                                <div
+                                    key={item.id}
+                                    className="flex hover:bg-slate-200 items-center p-2"
+                                    onClick={() => handleNavigate(item.id)}
+                                >
+                                    <div className="h-[60px] w-[60px] p-1">
+                                        <img
+                                            className="h-full w-full object-contain"
+                                            src={item.colorimg[0].img[0]}
+                                            alt=""
+                                        />
+                                    </div>
+                                    <div className=" pl-[2px]">
+                                        <div className=" whitespace-nowrap  w-40 overflow-hidden text-ellipsis ">
+                                            {item.title}
+                                        </div>
+                                        <div className=" text-[13px] font-normal text-gray-400 whitespace-nowrap  w-40 overflow-hidden text-ellipsis ">
+                                            {item.des}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="flex hover:bg-slate-200 items-center">
-                            <div className="h-[60px] w-[60px] p-1">
-                                <img
-                                    className="h-full w-full object-contain"
-                                    src="https://static.wixstatic.com/media/45d10e_45e21af15e5a4e2fa81bc324b0c51cbf~mv2.jpg/v1/fill/w_750,h_750,al_c,q_85,enc_auto/45d10e_45e21af15e5a4e2fa81bc324b0c51cbf~mv2.jpg"
-                                    alt=""
-                                />
-                            </div>
-                            <div className="p-3 text-[15px]">
-                                <div>Tôi là sản phẩm </div>
-                                <div>Tôi là mô tả sản phẩm... </div>
-                            </div>
-                        </div>
-                        <div className="flex hover:bg-slate-200 items-center">
-                            <div className="h-[60px] w-[60px] p-1">
-                                <img
-                                    className="h-full w-full object-contain"
-                                    src="https://static.wixstatic.com/media/45d10e_45e21af15e5a4e2fa81bc324b0c51cbf~mv2.jpg/v1/fill/w_750,h_750,al_c,q_85,enc_auto/45d10e_45e21af15e5a4e2fa81bc324b0c51cbf~mv2.jpg"
-                                    alt=""
-                                />
-                            </div>
-                            <div className="p-3 text-[15px]">
-                                <div>Tôi là sản phẩm </div>
-                                <div>Tôi là mô tả sản phẩm... </div>
-                            </div>
-                        </div>
-                    </div>
+                    </>
                 ) : (
                     ''
                 )}
@@ -252,7 +274,7 @@ export default function Navbar() {
                         </Link>
                     </span>
                 )}
-
+                {/* CART */}
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
                         <Badge badgeContent={totalQuantity} color="primary">
@@ -267,7 +289,6 @@ export default function Navbar() {
                     </div>
                 </div>
             </div>
-
             {/* OPEN CART */}
             {openCartDemo ? (
                 <div
@@ -280,7 +301,7 @@ export default function Navbar() {
                         className="flex absolute top-0 right-0 h-full w-full bg-gray-400 opacity-60 z-40"
                     ></div>
                     <div className="absolute top-0 right-0 w-[400px] h-full bg-white z-50 flex flex-col ">
-                        <div className="bg-black  text-white flex justify-end items-center text-center p-7">
+                        <div className="bg-black  text-white flex justify-end items-center text-center p-5">
                             <span className="text-2xl flex-none">
                                 <ArrowForwardIosIcon
                                     onClick={() => handleCloseCart()}
@@ -301,6 +322,7 @@ export default function Navbar() {
             ) : (
                 ''
             )}
+            {/* LOGOUT BOX */}
             {openLogOutBox ? (
                 <div className="absolute top-0 left-0 h-screen w-full bg-transparent2">
                     <div className=" absolute top-0 left-0 w-full h-full flex items-center justify-center">

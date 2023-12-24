@@ -38,6 +38,9 @@
 .textShadow {
     text-shadow: -2px 2px 2px #fff;
 }
+.boxShadow {
+    box-shadow: -2px 2px 2px #dddcdc;
+}
 
 .hoverShowTooltip {
     position: relative;

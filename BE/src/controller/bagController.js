@@ -57,6 +57,19 @@ const getOneBag = async (req, res) => {
     }
 }
 
+// GET BEST SELLER PRODUCT
+const getBestSeller = async (req, res) => {
+    try {
+        const getBestSeller = await db.Bag.findAll({
+            where: { bestseller: true },
+        })
+        res.json({ getBestSeller })
+    } catch (error) {
+        res.status(500).json({ error })
+        console.log(error)
+    }
+}
+
 //DELETE BAG
 const deleteBag = async (req, res) => {
     try {
@@ -118,6 +131,7 @@ const updateBag = async (req, res) => {
 module.exports = {
     createBag,
     getBag,
+    getBestSeller,
     deleteBag,
     updateBag,
     getOneBag,

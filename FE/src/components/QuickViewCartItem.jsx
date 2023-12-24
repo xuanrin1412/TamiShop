@@ -156,7 +156,7 @@ export default function QuickViewCartItem() {
                     Tổng Tiền : <span>{totalAll} VND</span>
                 </div>
                 <div
-                    className="p-2 m-5 text-white  bg-black hover:opacity-80 cursor-pointer  "
+                    className="p-4 m-5 text-white  bg-black hover:opacity-80 cursor-pointer  "
                     onClick={() => navigate('/cart')}
                 >
                     Xem giỏ hàng

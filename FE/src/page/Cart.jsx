@@ -160,6 +160,16 @@ export default function Cart() {
                                 </div>
                             </div>
                         ))}
+                        {cartItems.length === 0 && (
+                            <div className="h-[400px] w-[600px]">
+                                <img
+                                    className=" object-contain h-full w-full"
+                                    src="https://www.getillustrations.com/packs/matilda-startup-illustrations/scenes/_1x/shopping,%20e-commerce%20_%20empty,%20shopping%20cart,%20items,%20products,%20zero,%20none_md.png"
+                                    alt=""
+                                />
+                            </div>
+                        )}
+
                         <hr className="border-0 h-[1px] bg-[#D0D0D0] " />
                     </div>
 
