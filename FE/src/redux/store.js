@@ -9,11 +9,11 @@
 // Mỗi cặp key - value của đối tượng này đại diện cho một slice của trạng thái trong store.
 
 import { configureStore } from '@reduxjs/toolkit'
-import quickVCartReducer from './quickVCartSlice.js'
+import CartReducer from './cartSlice.js'
 
 export default configureStore({
     reducer: {
         //có một slice có tên là counter, và reducer của nó là counterReducer
-        quickVCart: quickVCartReducer,
+        Cart: CartReducer,
     },
 })

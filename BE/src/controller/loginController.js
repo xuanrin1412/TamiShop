@@ -21,8 +21,6 @@ const loginUser = async (req, res) => {
                     },
                     'xuanrin',
                 )
-                // GỬI tokenJWT VỀ NGƯỜI DÙNG BẰNG CÁCH ĐẶT NÓ TRONG COOKIE
-                // console.log('tokenJWT', tokenJWT)
                 res.cookie('tokenJWT', tokenJWT)
 
                 res.status(200).json({ message: 'Login successful' })

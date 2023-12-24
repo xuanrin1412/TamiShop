@@ -19,14 +19,6 @@ export default function Register() {
             })
             .then(result => {
                 console.log(result)
-                // if (userName.split(/\s+/).length <= 10) {
-                //     // Change the condition
-                //     // Reset validation state if the name is valid
-                //     setValidUserName(false)
-                //     navigate('/login')
-                // } else {
-                //     setValidUserName(true)
-                // }
                 if (result.data.message === 'Register successful') {
                     navigate('/login')
                 } else if (result.data.message === 'Email đã tồn tại') {

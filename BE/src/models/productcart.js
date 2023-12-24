@@ -23,12 +23,18 @@ module.exports = (sequelize, DataTypes) => {
             price: {
                 type: DataTypes.INTEGER,
             },
-            colorimg: {
-                type: DataTypes.ARRAY(DataTypes.JSON),
+            color: {
+                type: DataTypes.STRING,
+            },
+            img: {
+                type: DataTypes.STRING,
             },
             quantity: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+            },
+            total: {
+                type: DataTypes.INTEGER,
             },
             bagId: {
                 type: DataTypes.INTEGER,

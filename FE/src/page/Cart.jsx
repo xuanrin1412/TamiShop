@@ -4,11 +4,11 @@ import Footer from '../components/Footer'
 import React from 'react'
 import { Clear } from '@mui/icons-material'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-    decreaseProduct,
-    increaseProduct,
-    removeProduct,
-} from '../redux/quickVCartSlice'
+// import {
+//     decreaseProduct,
+//     increaseProduct,
+//     removeProduct,
+// } from '../redux/quickVCartSlice'
 
 export default function Cart() {
     const cartItem = useSelector(state => state.quickVCart.cartItem)
@@ -18,34 +18,34 @@ export default function Cart() {
     const allTotal = useSelector(state => state.quickVCart.allTotal)
     console.log('cart allTotal', allTotal)
 
-    const increaseQuantity = (productId, colorr) => {
-        dispatch(
-            increaseProduct({
-                productId: productId,
-                colorr: colorr,
-                quantity: 1,
-            }),
-        )
-    }
-    const decreaseQuantity = (productId, colorr) => {
-        dispatch(
-            decreaseProduct({
-                productId: productId,
-                colorr: colorr,
-                quantity: 1,
-            }),
-        )
-    }
+    // const increaseQuantity = (productId, colorr) => {
+    //     dispatch(
+    //         increaseProduct({
+    //             productId: productId,
+    //             colorr: colorr,
+    //             quantity: 1,
+    //         }),
+    //     )
+    // }
+    // const decreaseQuantity = (productId, colorr) => {
+    //     dispatch(
+    //         decreaseProduct({
+    //             productId: productId,
+    //             colorr: colorr,
+    //             quantity: 1,
+    //         }),
+    //     )
+    // }
 
-    const removeProductItem = (productId, color) => {
-        console.log('removeProductItem****')
-        dispatch(
-            removeProduct({
-                productId: productId,
-                color: color,
-            }),
-        )
-    }
+    // const removeProductItem = (productId, color) => {
+    //     console.log('removeProductItem****')
+    //     dispatch(
+    //         removeProduct({
+    //             productId: productId,
+    //             color: color,
+    //         }),
+    //     )
+    // }
 
     return (
         <div>
@@ -96,24 +96,24 @@ export default function Cart() {
                                                         ? ' bg-gray-100 text-gray-300 '
                                                         : ''
                                                 } `}
-                                                onClick={() =>
-                                                    decreaseQuantity(
-                                                        data.products.id,
-                                                        data.color,
-                                                    )
-                                                }
+                                                // onClick={() =>
+                                                //     decreaseQuantity(
+                                                //         data.products.id,
+                                                //         data.color,
+                                                //     )
+                                                // }
                                             >
                                                 -
                                             </button>
                                             <span>{data.quantity}</span>
                                             <button
                                                 className="px-3 py-[2px]"
-                                                onClick={() =>
-                                                    increaseQuantity(
-                                                        data.products.id,
-                                                        data.color,
-                                                    )
-                                                }
+                                                // onClick={() =>
+                                                //     increaseQuantity(
+                                                //         data.products.id,
+                                                //         data.color,
+                                                //     )
+                                                // }
                                             >
                                                 +
                                             </button>
@@ -124,10 +124,10 @@ export default function Cart() {
                                         <span
                                             onClick={e => {
                                                 e.stopPropagation() // Ngăn chặn sự kiện navigate lan tỏa lên phần tử cha
-                                                removeProductItem(
-                                                    data.products.id,
-                                                    data.color,
-                                                )
+                                                // removeProductItem(
+                                                //     data.products.id,
+                                                //     data.color,
+                                                // )
                                             }}
                                             className=" cursor-pointer"
                                         >

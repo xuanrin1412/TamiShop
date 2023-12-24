@@ -11,39 +11,30 @@ import {
 } from '@mui/icons-material'
 import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { useDispatch } from 'react-redux'
-import { addToQuickVCart } from '../redux/quickVCartSlice'
 
 export default function InfoProduct() {
     const location = useLocation()
     const id = location.pathname.split('/')[2]
     const [dataInfo, setDataInfo] = useState([])
+    const navigate = useNavigate()
     console.log('######## INFOPRODUCT PAGE ##########')
-    //console.log('dataInfo', dataInfo)
-    // console.log(' dataInfo.colorimg', dataInfo.colorimg)
     const [mainImg, setMainImg] = useState() //MAIN IMG
-    // console.log('mainImg', mainImg)
 
-    // đáng lẽ là main img nhueng lại set
     // USESTATE OPEN OVERLAY PIC
     const [openPic, setOpenPic] = useState(false)
     const [bigPic, setBigPic] = useState()
-    //console.log('bigPic', bigPic)
 
     // CONCAC LIST IMG
     const [arrayImg, setArrayImg] = useState([])
     const test1 = arrayImg.map(img => {
         return img
     })
-    //console.log('test1', test1)
     const alllist = [].concat(...test1)
-    //console.log('alllist', alllist)
 
     // HANLE OVERLAY SLIDE LEFT RIGHT
     const [currentIndexImg, setCurrentIndexImg] = useState(0)
-    //console.log('currentIndexImg click to small pic', currentIndexImg)
     const handleLeftRight = type => {
         if (type === 'left') {
             setCurrentIndexImg(prevIndex =>
@@ -87,14 +78,10 @@ export default function InfoProduct() {
     const [selectedColor, setSelectedColor] = useState({ color: null, img: [] })
     console.log('selectedColor', selectedColor)
 
-    const imgchoosed = selectedColor.img.map(imggg => imggg)
+    const imgchoosed = selectedColor.img[0]
     const colorchoosed = selectedColor.color
-    //console.log('imgISchoosed', imgchoosed)
-    //console.log('colorchoosed', colorchoosed)
 
     const [activeColors, setActiveColors] = useState({})
-    //console.log('activeColor', activeColors)
-
     const handleColorClick = choosedColor => {
         //****/ handle click color active color
         const newActiveColors = {}
@@ -156,13 +143,10 @@ export default function InfoProduct() {
         getProduct()
     }, [id, bigPic])
 
-    const [quanlity, setQuanlity] = useState(1)
-    console.log('quanlityinfo', quanlity)
-    //console.log('quanlityinfotypeof', typeof quanlity)
+    const [quantity, setQuantity] = useState(1)
+    console.log('quanlityinfo', quantity)
 
-    //HANDLE ADD TO  CART
-    const dispatch = useDispatch()
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
         if (colorchoosed === null) {
             const elements = document.getElementsByClassName('color')
             // Loop through each element and set the style
@@ -171,18 +155,27 @@ export default function InfoProduct() {
                 element.style.color = 'red'
             }
         } else {
-            dispatch(
-                addToQuickVCart({
-                    products: dataInfo,
-                    color: colorchoosed,
-                    imgChoosed: imgchoosed,
-                    quantity: quanlity,
-                    total: quanlity * dataInfo.price,
-                }),
-            )
-            console.log('handleAddToCart', dataInfo, colorchoosed, quanlity)
-            // Sau khi thêm vào giỏ hàng, reset colorchoosed và imgchoosed
-            setSelectedColor({ color: null, img: [] })
+            await axios
+                .post(
+                    `http://localhost:8080/product_cart/addToCart/`,
+                    {
+                        color: colorchoosed,
+                        img: imgchoosed,
+                        quantity: quantity,
+                        bagId: id,
+                        total: quantity * dataInfo.price,
+                    },
+                    { withCredentials: true },
+                )
+                .then(response => {
+                    console.log('response add to cart ', response)
+                    if (response.data.message === "You haven't login") {
+                        navigate('/login')
+                    }
+                })
+                .catch(error => {
+                    console.log(error, "Can't add to cart")
+                })
         }
     }
 
@@ -326,9 +319,9 @@ export default function InfoProduct() {
                                         type="number"
                                         placeholder="1"
                                         min="1"
-                                        value={+quanlity}
+                                        value={+quantity}
                                         onChange={e =>
-                                            setQuanlity(
+                                            setQuantity(
                                                 parseInt(e.target.value, 10) ||
                                                     0,
                                             )

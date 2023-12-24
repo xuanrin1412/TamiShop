@@ -23,12 +23,14 @@ export default function Login() {
                 if (response.data.message === 'Login successful') {
                     navigate('/')
                 } else if (response.data.message === 'User does not exis') {
-                    alert('Check your email  ')
+                    alert('Check your email')
                 } else if (
                     response.data.message ===
                     'Fail to Login Check your password'
                 ) {
                     alert('Check your password')
+                } else if (response.data.message === 'User does not exis') {
+                    alert('User does not exit')
                 }
             })
     }

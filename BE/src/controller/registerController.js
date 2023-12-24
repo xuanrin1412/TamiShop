@@ -24,7 +24,8 @@ const createUser = async (req, res) => {
                 password,
                 admin,
             })
-            res.json({ newUser, message: 'Register successful' })
+            const newCart = await db.Cart.create({ userId: newUser.id })
+            res.json({ newUser, newCart, message: 'Register successful' })
             console.log('newUser', newUser)
         }
     } catch (error) {
