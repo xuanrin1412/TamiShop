@@ -9,7 +9,7 @@ export default function ProductMain() {
     const [data, setData] = useState([])
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    console.log(data)
+    // console.log(data)
     useEffect(() => {
         axios
             .get('http://localhost:8080/bag/get/')

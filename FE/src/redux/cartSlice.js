@@ -83,8 +83,19 @@ export const CartSlice = createSlice({
         status: 'idle',
         error: null,
         quantity: 0,
+        textSearch: '',
     },
     reducers: {
+        searchProduct: (state, action) => {
+            console.log('---SEARCH IN REDUX------')
+            const { textSearch } = action.payload
+
+            // Create a new state object instead of mutating the existing state
+            return {
+                ...state,
+                textSearch: textSearch,
+            }
+        },
         // decreaseProduct: (state, action) => {
         //     console.log('=============INCREASE========')
         //     const { productId, colorr, quantity } = action.payload
@@ -192,6 +203,5 @@ export const CartSlice = createSlice({
     },
 })
 
-// export const { addToCart, increaseProduct, decreaseProduct, removeProduct } =
-//     CartSlice.actions
+export const { searchProduct } = CartSlice.actions
 export default CartSlice.reducer

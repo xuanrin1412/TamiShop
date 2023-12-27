@@ -10,41 +10,49 @@ import Badge from '@mui/material/Badge'
 import Cookies from 'js-cookie'
 import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
-import { fetchUserCartProduct } from '../redux/cartSlice'
+import { fetchUserCartProduct, searchProduct } from '../redux/cartSlice'
+import { Clear } from '@mui/icons-material'
 
 export default function Navbar() {
     const navigate = useNavigate()
-    const [isFocused, setIsFocused] = useState(false)
-    const [openCartDemo, setOpenCartDemo] = useState(false)
-    const [userName, setUserName] = useState('')
-    const [openLogOutBox, setOpenLogOutBox] = useState(false)
-    const [bestseller, setBestseller] = useState([])
-    console.log('bestseller useStatwe', bestseller)
-
     const dispatch = useDispatch()
+
+    const location = useLocation()
+    const path = location.pathname
+    const [activeNav, setActiveNav] = useState('cuahang')
+
+    const [userName, setUserName] = useState('')
+
+    const [openLogOutBox, setOpenLogOutBox] = useState(false)
+    const [openCartDemo, setOpenCartDemo] = useState(false)
+
+    const [isFocused, setIsFocused] = useState(false)
+    const [bestseller, setBestseller] = useState([])
+
+    // TAKE OUT TOTAL QUANTITY
     const cartItems = useSelector(state => state.Cart.items.getCart) ?? []
-    console.log('cartItems navbar ====', cartItems)
     const arrayTotalQuantity = cartItems && cartItems.map(item => item.quantity)
     const totalQuantity = arrayTotalQuantity.reduce(
         (acc, item) => acc + item,
         0,
     )
-    console.log('totalQuantity', totalQuantity)
 
-    const [activeNav, setActiveNav] = useState('cuahang')
-
-    const location = useLocation()
-    const path = location.pathname
-    console.log('path', path)
-
+    // HANDLE ACTIVE NAV
     const handleClick = type => {
         setActiveNav(type)
     }
 
+    // HANDLE FOCUS INPUT SEARCH SHOW TEXT BESTSELLER & CLICK OUTSIDE DISAPPEAR
     const handleFocus = () => {
         setIsFocused(true)
     }
+    const handleBodyClick = event => {
+        if (!event.target.closest('.bestseller-area')) {
+            setIsFocused(false)
+        }
+    }
 
+    // HANDLE OPEN CLOSE CART
     const handleOpenCart = () => {
         setOpenCartDemo(true)
     }
@@ -52,17 +60,12 @@ export default function Navbar() {
         setOpenCartDemo(false)
     }
 
+    // HANDLE OPEN-CLOSE LOGOUT & CALL API LOGOUT
     const handleOpenLogOut = () => {
         setOpenLogOutBox(true)
     }
     const handleCloseLogOut = () => {
         setOpenLogOutBox(false)
-    }
-
-    const handleNavigate = id => {
-        console.log('hiii')
-        navigate(`/infoProduct/${id}`)
-        console.log('handleNavigate', navigate(`/infoProduct/${id}`))
     }
     const handleLogOut = () => {
         axios
@@ -77,18 +80,31 @@ export default function Navbar() {
             })
     }
 
-    const handleBodyClick = event => {
-        if (!event.target.closest('.bestseller-area')) {
+    // HANDLE NAVIGATE TO INFO BESTSELLER ITEM IN SEARCH
+    const handleNavigate = id => {
+        navigate(`/infoProduct/${id}`)
+        console.log('handleNavigate', navigate(`/infoProduct/${id}`))
+    }
+
+    // HANDLE SEARCH SEND DATA TO SEARCH PRODUCT PAGE
+    const [textSearch, setTextSearch] = useState('')
+    const handleSearch = () => {
+        //PARSE DATA TO REDUX AND SET IT TO TEXTSEARCH
+        dispatch(searchProduct({ textSearch }))
+        navigate('/searchProduct')
+    }
+    const handleKeyPress = e => {
+        if (e.key === 'Enter') {
+            handleSearch()
             setIsFocused(false)
         }
     }
+
     useEffect(() => {
         const token = Cookies.get('tokenJWT')
-        console.log('token', token)
         if (token) {
             try {
                 const decodedToken = jwtDecode(token)
-                console.log('decodedToken', decodedToken)
                 setUserName(decodedToken.userName)
             } catch (error) {
                 console.error('Error decoding token:', error)
@@ -184,7 +200,7 @@ export default function Navbar() {
             </div>
 
             {/*  RIGHT */}
-            <div className="  relative  sm:space-x-5  flex flex-col-reverse  sm:items-center sm:flex-row">
+            <div className="relative  sm:space-x-6  flex flex-col-reverse  sm:items-center sm:flex-row">
                 {/*SEARCH BAR*/}
                 <div
                     className={`bestseller-area flex items-center ${
@@ -195,11 +211,25 @@ export default function Navbar() {
                         <SearchIcon />
                     </div>
                     <input
-                        className="max-w-[140px] outline-none bg-slate-100"
+                        className="max-w-[160px] outline-none bg-slate-100"
                         type="text"
                         placeholder="Tìm kiếm..."
                         onFocus={handleFocus}
+                        value={textSearch}
+                        onChange={e => setTextSearch(e.target.value)}
+                        onKeyDown={e => handleKeyPress(e)}
                     />
+                    <div
+                        className={` ${
+                            textSearch ? 'opacity-100' : ' opacity-0'
+                        }`}
+                    >
+                        <Clear
+                            onClick={() => setTextSearch('')}
+                            className=" opacity-100 hover:opacity-50 cursor-pointer"
+                            style={{ fontSize: '17px' }}
+                        />
+                    </div>
                 </div>
                 {/* FOCUS TOGGLE BEST SELLER PRODUCT */}
                 {isFocused ? (
@@ -237,19 +267,12 @@ export default function Navbar() {
                 ) : (
                     ''
                 )}
-                {/* avatar */}
-                {/* <div className="hidden sm:block">
-                    <Avatar
-                        className="hidden sm:flex"
-                        alt="Remy Sharp"
-                        src="https://api-private.atlassian.com/users/e764a2d1a95da6d51e2a798ee7c66e44/avatar"
-                    />
-                </div> */}
 
+                {/* USER */}
                 {userName ? (
-                    <span className="flex font-medium  items-center space-x-2 ">
+                    <span className="flex font-medium  items-center space-x-4 ">
                         <span>
-                            User:
+                            User:{' '}
                             <span className=" text-xl text-red-500 uppercase">
                                 {userName}
                             </span>

@@ -186,11 +186,19 @@ export default function Cart() {
                             </div>
                             <div className="flex justify-between font-bold">
                                 <span>Tiền Ship</span>
-                                <span>50000 VND</span>
+                                {cartItems.length === 0 ? (
+                                    <span>0 VND</span>
+                                ) : (
+                                    <span>50000 VND</span>
+                                )}
                             </div>
                             <div className="flex justify-between font-bold">
                                 <span>Discount Ship</span>
-                                <span>- 50000 VND</span>
+                                {cartItems.length === 0 ? (
+                                    <span>0 VND</span>
+                                ) : (
+                                    <span>-50000 VND</span>
+                                )}
                             </div>
                         </div>
                         <hr className="mt-2 border-0 h-[2px] bg-[#D0D0D0] " />
