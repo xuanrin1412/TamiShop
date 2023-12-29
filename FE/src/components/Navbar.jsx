@@ -76,6 +76,7 @@ export default function Navbar() {
                     setOpenLogOutBox(false)
                     navigate('/')
                     setUserName('')
+                    dispatch(fetchUserCartProduct())
                 }
             })
     }
@@ -98,6 +99,15 @@ export default function Navbar() {
             handleSearch()
             setIsFocused(false)
         }
+    }
+
+    // HANDLE OPEN CLOSE HAMBURGER MENU (MOBILE)
+    const [openHamburger, setOpenHamburger] = useState(false)
+    const handleOnClickOpenHam = () => {
+        setOpenHamburger(true)
+    }
+    const handleCloseHam = () => {
+        setOpenHamburger(false)
     }
 
     useEffect(() => {
@@ -137,15 +147,17 @@ export default function Navbar() {
     }, [totalQuantity, dispatch])
 
     return (
-        <div className=" w-full bg-slate-100 py-5 px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
+        <div className=" w-full bg-slate-100 py-5 h-[104px] px-[20px] sm:px-[50px] flex justify-between items-center top-0 left-0 fixed z-20 ">
             <div className="flex flex-col">
                 <h2
                     className="text-4xl font-medium"
                     onClick={() => navigate('/')}
                 >
-                    Tò Te
+                    Tami
                 </h2>
-                <h3 className="font-medium">Túi in họa tiết cá tính </h3>
+                <h3 className=" font-medium opacity-50 hidden sm:flex">
+                    Thế giới túi sách
+                </h3>
             </div>
             {/*NAV BAR*/}
             <div className="hidden sm:flex sm:space-x-5">
@@ -198,6 +210,100 @@ export default function Navbar() {
                     Liên hệ
                 </span>
             </div>
+            {/* NAVBAR FOR MOBILE */}
+            {openHamburger === true && (
+                <div className="flex absolute top-0 left-0  flex-col items-center justify-center  text-4xl space-y-9 bg-white h-screen w-full z-50">
+                    <div
+                        onClick={() => handleCloseHam()}
+                        className=" absolute top-10 right-10  text-black hover:opacity-60"
+                    >
+                        <Clear style={{ fontSize: '50px' }} />
+                    </div>
+                    {userName ? (
+                        <span className=" items-center space-x-4 font-bold ">
+                            <span>
+                                User:{' '}
+                                <span className="  uppercase">{userName}</span>
+                            </span>
+                        </span>
+                    ) : (
+                        <span className=" font-medium flex space-x-3">
+                            <Link to={'/login'}>
+                                <span>Đăng Nhập</span>
+                            </Link>
+                            <span className="h-10 sm:h-6 w-1 bg-black"></span>
+                            <Link to={'/register'}>
+                                <span>Đăng Kí</span>
+                            </Link>
+                        </span>
+                    )}
+
+                    <span
+                        onClick={() => {
+                            handleClick('cuahang')
+                            navigate('/#cuahang')
+                            handleCloseHam()
+                        }}
+                        className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                            activeNav === 'cuahang' && path === '/'
+                                ? 'activeNav'
+                                : ''
+                        }`}
+                    >
+                        <a href="#cuahang">Cửa hàng</a>
+                    </span>
+                    <span
+                        onClick={() => {
+                            handleClick('gioithieu')
+                            navigate('/#gioithieu')
+                            handleCloseHam()
+                        }}
+                        className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                            activeNav === 'gioithieu' && path === '/'
+                                ? 'activeNav'
+                                : ''
+                        }`}
+                    >
+                        <a href="#gioithieu">Giới thiệu</a>
+                    </span>
+                    <span
+                        onClick={() => {
+                            navigate('/question')
+                            setActiveNav(activeNav === '')
+                            handleCloseHam()
+                        }}
+                        className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                            path === '/question' ? 'activeNav' : ''
+                        }`}
+                    >
+                        Hỏi đáp
+                    </span>
+                    <span
+                        onClick={() => {
+                            navigate('/contact')
+                            setActiveNav(activeNav === '')
+                            handleCloseHam()
+                        }}
+                        className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                            path === '/contact' ? 'activeNav' : ''
+                        }`}
+                    >
+                        Liên hệ
+                    </span>
+                    {userName ? (
+                        <div className="h-10 w-10 object-cover flex">
+                            <img
+                                onClick={handleOpenLogOut}
+                                className="h-full w-full"
+                                src="https://cdn-icons-png.flaticon.com/512/4400/4400629.png"
+                                alt=""
+                            />
+                        </div>
+                    ) : (
+                        ''
+                    )}
+                </div>
+            )}
 
             {/*  RIGHT */}
             <div className="relative  sm:space-x-6  flex flex-col-reverse  sm:items-center sm:flex-row">
@@ -270,7 +376,7 @@ export default function Navbar() {
 
                 {/* USER */}
                 {userName ? (
-                    <span className="flex font-medium  items-center space-x-4 ">
+                    <span className=" hidden sm:flex font-medium  items-center space-x-4 ">
                         <span>
                             User:{' '}
                             <span className=" text-xl text-red-500 uppercase">
@@ -287,7 +393,7 @@ export default function Navbar() {
                         </div>
                     </span>
                 ) : (
-                    <span className=" font-medium flex space-x-3">
+                    <span className=" hidden font-medium sm:flex space-x-3">
                         <Link to={'/login'}>
                             <span>Đăng Nhập</span>
                         </Link>
@@ -297,7 +403,7 @@ export default function Navbar() {
                         </Link>
                     </span>
                 )}
-                {/* CART */}
+                {/* CART & HAMBURGER */}
                 <div>
                     <div className=" float-right sm:float-none space-x-5 sm:space-x-0 flex  items-center  sm:flex-none  ">
                         <Badge badgeContent={totalQuantity} color="primary">
@@ -308,7 +414,12 @@ export default function Navbar() {
                             />
                         </Badge>
 
-                        <span className="sm:hidden text-4xl">&#9776;</span>
+                        <span
+                            onClick={() => handleOnClickOpenHam()}
+                            className="sm:hidden text-4xl"
+                        >
+                            &#9776;
+                        </span>
                     </div>
                 </div>
             </div>
@@ -347,7 +458,7 @@ export default function Navbar() {
             )}
             {/* LOGOUT BOX */}
             {openLogOutBox ? (
-                <div className="absolute top-0 left-0 h-screen w-full bg-transparent2">
+                <div className="absolute top-0 left-0 h-screen w-full bg-transparent2 z-50">
                     <div className=" absolute top-0 left-0 w-full h-full flex items-center justify-center">
                         <div className="bg-white border-2 border-black p-8 space-y-4 rounded">
                             <div className="text-xl font-medium">
@@ -355,7 +466,10 @@ export default function Navbar() {
                             </div>
                             <div className="flex justify-between">
                                 <span
-                                    onClick={() => handleLogOut()}
+                                    onClick={() => {
+                                        handleLogOut()
+                                        handleCloseHam()
+                                    }}
                                     className="border-2 p-2 px-4 cursor-pointer hover:bg-black hover:text-white"
                                 >
                                     Yes

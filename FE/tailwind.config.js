@@ -1,4 +1,5 @@
 // tailwind.config.js
+const defaultTheme = require('tailwindcss/defaultTheme')
 module.exports = {
     content: [
         './src/**/*.{js,jsx,ts,tsx}',
@@ -10,6 +11,8 @@ module.exports = {
         extend: {
             colors: {
                 'black-rgba': 'rgba(255, 255, 255, 0.5)',
+                'linear-carousel1':
+                    'linear-gradient(135deg, #e66465, #9198e5);',
             },
             height: {
                 124: '25rem',
@@ -20,6 +23,9 @@ module.exports = {
                 124: '25rem',
                 150: '37.5rem',
                 100: '6.25rem',
+            },
+            fontFamily: {
+                roboto: ['"Roboto Slab"', ...defaultTheme.fontFamily.sans],
             },
         },
     },

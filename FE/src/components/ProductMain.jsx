@@ -66,7 +66,7 @@ export default function ProductMain() {
     return (
         <div
             id="cuahang"
-            className=" w-full  p-4 flex flex-wrap  mt-[104px] scroll-mt-[104px]"
+            className=" w-full  p-4 flex flex-wrap scroll-mt-[104px] "
         >
             {/* ITEM MAIN */}
             {data.map((dataItem, index) => (

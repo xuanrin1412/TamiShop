@@ -138,12 +138,12 @@ export default function SearchProduct(props) {
                     <div className="text-center text-4xl font-bold">
                         Kết quả tìm kiếm
                     </div>
-                    <div className=" my-5 w-2/3 mx-auto  flex items-center border border-black ">
+                    <div className=" my-5 sm:w-2/3 mx-auto  flex items-center border border-black ">
                         <div className="px-[10px]">
                             <Search />
                         </div>
                         <input
-                            className="flex-1 p-2 text-xl outline-none "
+                            className="flex-1 p-2 text-xl outline-none min-w-[200px]"
                             value={textSearchP}
                             onChange={e => setTextSearchP(e.target.value)}
                             type="text"
@@ -155,7 +155,7 @@ export default function SearchProduct(props) {
                             />
                         </div>
                     </div>
-                    <div className="flex justify-between items-center ">
+                    <div className="flex sm:flex-row flex-col justify-between items-center ">
                         <div>
                             {/* <div>price</div> */}
                             {/* <Box sx={{ width: 200 }}>
@@ -169,37 +169,59 @@ export default function SearchProduct(props) {
                                     // getAriaValueText={valuetext}
                                 />
                             </Box> */}
-                            <TextField
-                                label="Giá tối thiểu"
-                                type="number"
-                                value={minPrice}
-                                onChange={e => setMinPrice(e.target.value)}
-                            />
-                            <TextField
-                                label="Giá tối đa"
-                                type="number"
-                                value={maxPrice}
-                                onChange={e => setMaxPrice(e.target.value)}
-                            />
-                        </div>
-                        {textSearchP && (
-                            <div className=" underline">
-                                Đã tìm thấy <span>{filteredData.length}</span>{' '}
-                                sản phẩm cho{' '}
-                                <span className="font-bold">
-                                    "{textSearchP}"
-                                </span>
+                            <div className="flex flex-row items-center ">
+                                <span className="pr-2">Khoảng giá</span>
+                                <input
+                                    className="border p-2 w-[100px]"
+                                    placeholder="0"
+                                    type="number"
+                                    value={minPrice}
+                                    onChange={e => setMinPrice(e.target.value)}
+                                />
+                                <input
+                                    className="border p-2 w-[100px]"
+                                    placeholder="500000"
+                                    type="number"
+                                    value={maxPrice}
+                                    onChange={e => setMaxPrice(e.target.value)}
+                                />
                             </div>
-                        )}
-                        <div className="flex">
-                            Sắp xếp theo :
-                            <select
-                                onChange={e => handleSortChange(e.target.value)}
+                        </div>
+                        <div className="flex justify-between space-x-3 items-center  ">
+                            {' '}
+                            {textSearchP && (
+                                <div className=" underline">
+                                    Đã tìm thấy{' '}
+                                    <span>{filteredData.length}</span> sản phẩm
+                                    cho{' '}
+                                    <span className="font-bold">
+                                        "{textSearchP}"
+                                    </span>
+                                </div>
+                            )}
+                            <div
+                                className={`ml-6 ${
+                                    !textSearchP
+                                        ? 'w-full  border p-2'
+                                        : 'flex border p-2'
+                                } `}
                             >
-                                <option value="phuhopnhat">Phù hợp nhất</option>
-                                <option value="thapdencao">Giá (Tăng)</option>
-                                <option value="caodenthap">Giá (Giảm)</option>
-                            </select>
+                                <select
+                                    onChange={e =>
+                                        handleSortChange(e.target.value)
+                                    }
+                                >
+                                    <option value="phuhopnhat">
+                                        Phù hợp nhất
+                                    </option>
+                                    <option value="thapdencao">
+                                        Giá (Tăng)
+                                    </option>
+                                    <option value="caodenthap">
+                                        Giá (Giảm)
+                                    </option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div className=" w-full  flex flex-wrap ">

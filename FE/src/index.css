@@ -67,3 +67,11 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* carousel css */
+.bg-linear-carousel1 {
+    background: linear-gradient(135deg, rgb(178, 205, 232), #ffe7e7);
+}
+.shadow-text {
+    text-shadow: -2px 3px 1px white;
+}
