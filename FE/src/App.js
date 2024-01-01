@@ -7,6 +7,7 @@ import Cart from './page/Cart'
 import Login from './page/Login'
 import Register from './page/Register'
 import SearchProduct from './page/SearchProduct'
+import Manager from './page/Manager/Manager'
 
 function App() {
     return (
@@ -20,6 +21,7 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/searchProduct" element={<SearchProduct />} />
+                <Route path="/manager" element={<Manager />} />
             </Routes>
         </Router>
     )

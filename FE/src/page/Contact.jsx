@@ -61,9 +61,9 @@ export default function Contact() {
                                 Hãy liên hệ chúng tôi nếu có bất cứ câu hỏi nào
                             </div>
                             <div className="flex flex-col sm:flex-row font-bold ">
-                                <div> ĐT: 024 3456 7890</div>
+                                <div> ĐT: 0967016129</div>
                                 <div className="mx-4 hidden sm:flex">|</div>
-                                <div>lienhe@web.com</div>
+                                <div>xuanrin1412@gmail.com</div>
                             </div>
                         </div>
                     </div>

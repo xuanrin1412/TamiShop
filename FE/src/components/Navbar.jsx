@@ -115,6 +115,7 @@ export default function Navbar() {
         if (token) {
             try {
                 const decodedToken = jwtDecode(token)
+                console.log('decodedToken==========', decodedToken)
                 setUserName(decodedToken.userName)
             } catch (error) {
                 console.error('Error decoding token:', error)
@@ -163,6 +164,17 @@ export default function Navbar() {
             <div className="hidden sm:flex sm:space-x-5">
                 <span
                     onClick={() => {
+                        navigate('/manager')
+                        setActiveNav(activeNav === '')
+                    }}
+                    className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                        path === '/manager' ? 'activeNav' : ''
+                    }`}
+                >
+                    Quản lý
+                </span>
+                <span
+                    onClick={() => {
                         handleClick('cuahang')
                         navigate('/#cuahang')
                     }}
@@ -174,6 +186,7 @@ export default function Navbar() {
                 >
                     <a href="#cuahang">Cửa hàng</a>
                 </span>
+
                 <span
                     onClick={() => {
                         handleClick('gioithieu')
@@ -251,6 +264,17 @@ export default function Navbar() {
                         }`}
                     >
                         <a href="#cuahang">Cửa hàng</a>
+                    </span>
+                    <span
+                        onClick={() => {
+                            navigate('/manager')
+                            setActiveNav(activeNav === '')
+                        }}
+                        className={`font-medium hover:opacity-70 cursor-pointer whitespace-no-wrap flex-shrink-0 min-w-[0] ${
+                            path === '/manager' ? 'activeNav' : ''
+                        }`}
+                    >
+                        Quản lý
                     </span>
                     <span
                         onClick={() => {

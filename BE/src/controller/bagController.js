@@ -72,17 +72,23 @@ const getBestSeller = async (req, res) => {
 
 //DELETE BAG
 const deleteBag = async (req, res) => {
-    try {
-        const deleteBag = await db.Bag.destroy({
-            where: {
-                id: req.params.idBag,
-            },
-        })
-        res.status(200).json({ message: 'Bag has been deleted' })
-        console.log(deleteBag)
-    } catch (error) {
-        res.status(500).json({ error })
-        console.log(error)
+    const isAdmin = req.user.admin
+
+    if (isAdmin == true) {
+        try {
+            const deleteBag = await db.Bag.destroy({
+                where: {
+                    id: req.params.idBag,
+                },
+            })
+            res.status(200).json({ message: 'Bag has been deleted' })
+            console.log(deleteBag)
+        } catch (error) {
+            res.status(500).json({ error })
+            console.log(error)
+        }
+    } else {
+        res.status(500).json({ message: "You are't admin" })
     }
 }
 //DELETE All BAG
@@ -101,6 +107,7 @@ const deleteAllBag = async (req, res) => {
 const updateBag = async (req, res) => {
     const { title, price, des, colorimg, bestseller } = req.body
     const isAdmin = req.user.admin
+
     if (isAdmin == true) {
         try {
             const updateBag = await db.Bag.update(

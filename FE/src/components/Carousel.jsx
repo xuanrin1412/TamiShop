@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import pic1 from '../pic/pic1.jpg'
 import CarouselItem1 from './CarouselItem/CarouselItem1'
-import CarouselItem2 from './CarouselItem/CarouselItem2'
 import CarouselItem3 from './CarouselItem/CarouselItem3'
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'

@@ -8,10 +8,10 @@ export default function Intro() {
         >
             <h2 className="text-4xl font-bold mb-7">Giới thiệu</h2>
             <h3 className=" max-w-3xl mx-auto text-2xl">
-                Tôi là đoạn văn. Nhấp vào đây để thêm văn bản và chỉnh sửa. Dễ
-                thôi. Chỉ cần nhấp vào “Chỉnh sửa văn bản” hoặc nhấp đúp để thêm
-                nội dung của bạn và thay đổi phông chữ. Tôi là nơi tuyệt vời để
-                bạn kể một câu chuyện và cho người dùng biết thêm về bạn.
+                Chào mừng đến với cửa hàng chúng tôi - điểm đến lý tưởng cho
+                những người yêu thích sự thời trang và chất lượng. Tại đây,
+                chúng tôi tự hào giới thiệu ba dòng sản phẩm độc đáo và phong
+                cách trong thế giới của túi sách.
             </h3>
         </div>
     )

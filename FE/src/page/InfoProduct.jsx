@@ -7,7 +7,6 @@ import {
     ArrowLeftOutlined,
     ArrowRight,
     Close,
-    Favorite,
 } from '@mui/icons-material'
 import ToggleInfoDes from '../components/ToggleInfoDes'
 import Footer from '../components/Footer'
@@ -279,9 +278,6 @@ export default function InfoProduct() {
                                     <h1 className="text-3xl">
                                         {dataInfo.title}
                                     </h1>
-                                    <div className="  sm:hidden bg-gray-200  rounded-full ml-4 p-3 stroke-1 text-white  active:text-red-600">
-                                        <Favorite />
-                                    </div>
                                 </div>
 
                                 <h3>SKU: 0012</h3>
@@ -346,13 +342,10 @@ export default function InfoProduct() {
                                 <div className="flex">
                                     <button
                                         onClick={() => handleAddToCart()}
-                                        className="bg-white border-2 border-black flex-1  p-3 sm:p-0"
+                                        className="bg-white border-2 border-black flex-1  p-3 "
                                     >
                                         Thêm vào giỏ hàng
                                     </button>
-                                    <div className="hidden sm:block ml-4 p-3 bg-black text-white">
-                                        <Favorite />
-                                    </div>
                                 </div>
 
                                 <button className="bg-black p-3 flex-1 text-white">

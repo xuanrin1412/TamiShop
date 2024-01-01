@@ -17,7 +17,7 @@ router.post('/create', checkLogin, createBag)
 router.get('/get', getBag)
 router.get('/getone/:idBag', getOneBag)
 router.get('/getBestSeller', getBestSeller)
-router.delete('/delete/:idBag', deleteBag)
+router.delete('/delete/:idBag', checkLogin, deleteBag)
 router.delete('/deleteAll', deleteAllBag)
 router.put('/update/:idBag', checkLogin, updateBag)
 
