@@ -38,7 +38,7 @@ app.post('/api/create-checkout-session', async (req, res) => {
 
     const lineItems = products.map(product => ({
         price_data: {
-            currency: 'inr',
+            currency: 'vnd',
             product_data: {
                 name: product.Bag.title, // This is the missing property
                 images: [product.img],
