@@ -7,6 +7,7 @@ const {
     increaseProduct,
     totalAll,
     decreaseProduct,
+    deleteAllCartItem,
 } = require('../controller/productCartController.js')
 
 const checkLogin = require('../middleware/checkLogin.js')
@@ -17,6 +18,7 @@ const router = express.Router()
 router.post('/addToCart', checkLogin, addToCart)
 router.get('/getAllCartItem', checkLogin, getAllCartItem)
 router.delete('/delete/:idProductcart/:idColorProductcart', deleteCartItem)
+router.delete('/deleteAll', checkLogin, deleteAllCartItem)
 router.put(
     '/increaseProduct/:idProductcart/:idColorProductcart',
     increaseProduct,

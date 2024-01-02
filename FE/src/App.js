@@ -8,6 +8,8 @@ import Login from './page/Login'
 import Register from './page/Register'
 import SearchProduct from './page/SearchProduct'
 import Manager from './page/Manager/Manager'
+import Success from './page/Success'
+import Cancel from './page/Cancel'
 
 function App() {
     return (
@@ -22,6 +24,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/searchProduct" element={<SearchProduct />} />
                 <Route path="/manager" element={<Manager />} />
+                <Route path="/success" element={<Success />} />
+                <Route path="/cancel" element={<Cancel />} />
             </Routes>
         </Router>
     )

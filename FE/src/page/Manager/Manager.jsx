@@ -332,7 +332,7 @@ export default function Manager() {
                                             onClick={() => handleCloseView()}
                                             className=" fixed top-0 right-0 w-full h-full flex items-center justify-center bg-opacity-[0.05] bg-black "
                                         >
-                                            <div className="w-full sm:w-2/3  h-5/6 sm:h-full mt-28 p-7  space-y-4  flex flex-col justify-between bg-white">
+                                            <div className="w-full sm:w-2/3  h-3/4 sm:h-4/5 mt-28 p-7  space-y-4  flex flex-col justify-between bg-white">
                                                 <div className="text-center text-xl font-bold px-8 ">
                                                     Chi tiết sản phẩm
                                                 </div>

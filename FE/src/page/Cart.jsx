@@ -16,6 +16,7 @@ import {
 //     increaseProduct,
 //     removeProduct,
 // } from '../redux/quickVCartSlice'
+import { loadStripe } from '@stripe/stripe-js'
 
 export default function Cart() {
     console.log('#### CART PAGE #######')
@@ -69,6 +70,56 @@ export default function Cart() {
 
         fetchData()
     }, [dispatch])
+
+    // payment integration
+    const makePayment = async () => {
+        const stripe = await loadStripe(
+            `pk_test_51O2BltBMGimvwHpfSwNexLpY1K1hgiEgZ4cCzlS4AMAeCPcw48YObxnnZXhJfxhh32OwXZ4bornf3rBEjHAWzNT900ii2eMMHZ`,
+        )
+        console.log('stripe cart ', stripe)
+
+        const body = {
+            products: cartItems,
+        }
+
+        const headers = {
+            'Content-Type': 'application/json',
+        }
+
+        try {
+            const response = await fetch(
+                'http://localhost:8080/api/create-checkout-session',
+                {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(body),
+                },
+            )
+
+            if (!response.ok) {
+                console.error(
+                    'Failed to create checkout session:',
+                    response.statusText,
+                )
+                // Handle the error
+                return
+            }
+
+            const session = await response.json()
+
+            const result = await stripe.redirectToCheckout({
+                sessionId: session.id,
+            })
+
+            if (result.error) {
+                console.log(result.error)
+                // Handle the error
+            }
+        } catch (error) {
+            console.error('Error:', error)
+            // Handle unexpected errors
+        }
+    }
 
     return (
         <div>
@@ -206,7 +257,10 @@ export default function Cart() {
                             <span>Tổng</span>
                             <span>{totalAll} VND</span>
                         </div>
-                        <button className="w-full bg-black text-white py-2 hover:opacity-80">
+                        <button
+                            onClick={makePayment}
+                            className="w-full bg-black text-white py-2 hover:opacity-80"
+                        >
                             Thanh Toán
                         </button>
                     </div>

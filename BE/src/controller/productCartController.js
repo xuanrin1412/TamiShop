@@ -88,6 +88,26 @@ const deleteCartItem = async (req, res) => {
         console.log(error)
     }
 }
+//DELETE ALL CART ITEM
+const deleteAllCartItem = async (req, res) => {
+    try {
+        const userId = req.user.id
+        console.log('userId', userId)
+
+        // TAKE USER'S CART
+        const userCart = await db.Cart.findOne({
+            where: { userId },
+        })
+        const deleteAllBag = await db.ProductCart.destroy({
+            where: { cartId: userCart.id },
+        })
+        res.status(200).json({ message: 'Delete All User Cart Item !!' })
+        console.log(deleteAllBag)
+    } catch (error) {
+        res.status(500).json({ error })
+        console.log(error)
+    }
+}
 
 //INCREASE QUANTITY OF PRODUCT
 const increaseProduct = async (req, res) => {
@@ -254,6 +274,7 @@ module.exports = {
     addToCart,
     getAllCartItem,
     deleteCartItem,
+    deleteAllCartItem,
     getUserCartItem,
     totalAll,
     increaseProduct,
